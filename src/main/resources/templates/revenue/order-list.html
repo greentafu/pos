@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>매출관리-주문별</title>
+        <link href="/styles/revenue.css" rel="stylesheet">
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+        <link href="/styles/modal.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <div class="box-wholePage">
+                <div class="padding1" style="flex-direction: column;">
+                    <span id="pageName" data-name="revenue_order" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <div class="rowName70">조회기간 :</div>
+                            <input type="date" id="startDate">
+                            <span>~</span>
+                            <input type="date" id="endDate">
+                            <input type="radio" class="custom-radio" name="dateRadio" id="todayRadio" checked>
+                            <label for="todayRadio">오늘</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="weekRadio">
+                            <label for="weekRadio">금주</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="monthRadio">
+                            <label for="monthRadio">당월</label>
+                        </div>
+                        <div class="flex1 dip-row justify-r">
+                            <div class="rowName70">포스기 :</div>
+                            <select id="findPosNumber">
+                                <option value="0">전체</option>
+                                <option th:each="pos : ${posList}"
+                                        th:value="${pos.id}"
+                                        th:text="${pos.name}"
+                                        th:selected="${pos.id} == ${selectedPos}"
+                                >
+                                </option>
+                            </select>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <span class="rowName90">영수증번호 :</span>
+                            <input type="text" id="receiptNumber">
+                            <span class="rowName70">조회상품 :</span>
+                            <input type="text" id="searchName">
+                        </div>
+                        <div class="flex1 dip-row justify-r">
+                            <div style="min-width: 80px;">
+                                <button class="search" onclick="search()">조회</button>
+                            </div>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-80">
+                        <div class="scrollTableBox" id="scrollArea5">
+                            <table class="history">
+                                <thead>
+                                    <tr>
+                                        <th class="wth15">판매일자</th>
+                                        <th class="wth15">품목</th>
+                                        <th class="wth10">금액</th>
+                                        <th class="wth10">할인</th>
+                                        <th class="wth10">총결제금액</th>
+                                        <th class="wth10">현금결제</th>
+                                        <th class="wth10">카드결제</th>
+                                        <th class="wth10">포인트</th>
+                                        <th class="wth5">포스기</th>
+                                        <th class="wth5">취소</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fifthInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp5" disabled>∧</button>
+                            <button class="scroll" id="scrollDown5" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="listBox-10">
+                        <div class="scrollTableBox">
+                            <table class="history">
+                                <thead>
+                                    <tr>
+                                        <td colspan="10">금액 관련 합계는 취소된 주문을 제외한 기준입니다</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="wth15" id="summaryTotalCount" style="font-weight: 400;">0건</th>
+                                        <th class="wth15" style="font-weight: 400;"></th>
+                                        <th class="wth10" id="summaryPrice" style="font-weight: 400;">0</th>
+                                        <th class="wth10" id="summaryDiscount" style="font-weight: 400;">0</th>
+                                        <th class="wth10" id="summaryPayment" style="font-weight: 400;">0</th>
+                                        <th class="wth10" id="summaryCash" style="font-weight: 400;">0</th>
+                                        <th class="wth10" id="summaryCard" style="font-weight: 400;">0</th>
+                                        <th class="wth10" id="summaryPoint" style="font-weight: 400;">0</th>
+                                        <th class="wth5" style="font-weight: 400;"></th>
+                                        <th class="wth5" id="summaryStatusCount" style="font-weight: 400;">0건</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu selected">판매 건별<br/>내역</button>
+                <button class="menu" onclick="location.href='/revenue/date-list'">일자별 매출<br/>내역</button>
+                <button class="menu" onclick="location.href='/revenue/menu-list'">메뉴별 매출<br/>내역</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal">
+        <div id="modalItem" class="modal" style="display: none;">
+            <div class="modal-content-m receiptModal" id="receiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[영수증]</div>
+                    <button class="square30 icon" onclick="closeReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="receiptPrintArea">
+                    <div style="padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px dashed black;">
+                        <div>
+                            <span>[매장명]</span>
+                            <span th:text="${store.name}"></span>
+                        </div>
+                        <div>
+                            <span>[사업자]</span>
+                            <span th:text="${store.ownerDTO.regNumber}"></span>
+                        </div>
+                        <div>
+                            <span>[주 &nbsp; 소]</span>
+                            <span th:text="${store.location}"></span>
+                        </div>
+                        <div class="row-btw">
+                            <div>
+                                <span>[대표자]</span>
+                                <span th:text="${store.ownerDTO.name}"></span>
+                            </div>
+                            <div>
+                                <span>[TEL]</span>
+                                <span th:text="${store.telNumber}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span>[매출일]</span>
+                            <span id="orderModDate"></span>
+                        </div>
+                        <div>
+                            <span>[영수증]</span>
+                            <span id="orderReceiptNumber"></span>
+                        </div>
+                    </div>
+                    <table class="receipt">
+                        <thead>
+                            <tr>
+                                <td class="wth50">품목</td>
+                                <td class="wth15">단가</td>
+                                <td class="wth10">수량</td>
+                                <td class="wth25">금액</td>
+                            </tr>
+                        </thead>
+                        <tbody id="receiptBodyPoint">
+                            <tr>
+                                <td class="tdLeft">아메리카노</td>
+                                <td>2,800</td>
+                                <td>2</td>
+                                <td>4,600</td>
+                            </tr>
+                            <tr>
+                                <td class="tdLeft">(+ICE)</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="dashed" style="text-align: center;" colspan="3">주문금액</td>
+                                <td class="dashed" id="receiptPrice"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" colspan="3">할인금액</td>
+                                <td id="receiptDiscount"></td>
+                            </tr>
+                            <tr>
+                                <td class="dashed" style="text-align: center;" colspan="3">합계금액</td>
+                                <td class="dashed" id="receiptPayment"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" colspan="3">받은금액</td>
+                                <td id="receiptReceived"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" colspan="3">거스름돈</td>
+                                <td id="receiptChange"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-foot">
+                    <button onclick="window.print()">출력</button>
+                    <button onclick="openCashReceiptModal()">현금영수증</button>
+                    <button onclick="openCardReceiptModal()">카드영수증</button>
+                    <button class="receiptStatus" onclick="openCancelReceiptModal()">결제취소</button>
+                </div>
+            </div>
+            <div class="modal-content-m receiptModal" id="cashReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[현금영수증]</div>
+                    <button class="square30 icon" onclick="openReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="cashReceiptPoint"></div>
+                <div class="modal-foot-l" style="display:flex; flex-direction:column;">
+                    <span class="flex1" style="gap: 1%; padding-bottom: 1%; box-sizing: border-box;">
+                        <button id="showIssueCashList" onclick="openCashReceiptModal()">발행영수증 목록</button>
+                        <button id="showNonIssueCashList" onclick="openNonCashReceipt()">발행가능 목록</button>
+                    </span>
+                    <span class="flex1" style="gap: 1%; box-sizing: border-box;">
+                        <button id="printCashReceipt" onclick="printCashReceipt()">출력</button>
+                        <button class="receiptStatus" id="cancelCashReceipt" onclick="cancelCashReceipt()">현금영수증 취소</button>
+                        <button class="receiptStatus" id="saveCashReceipt" onclick="openSaveCashReceipt()">현금영수증 발행</button>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-content-m receiptModal" id="cardReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[카드영수증]</div>
+                    <button class="square30 icon" onclick="openReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="cardReceiptPoint"></div>
+                <div class="modal-foot">
+                    <button id="printCardReceipt" onclick="printCardReceipt()">출력</button>
+                </div>
+            </div>
+            <div class="modal-content-m receiptModal" id="saveCashReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[현금영수증]</div>
+                    <button class="square30 icon" onclick="openReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="newCashReceiptPoint"></div>
+                <div class="modal-foot">
+                    <button onclick="saveNewCashReceipt()">현금영수증 발행</button>
+                </div>
+            </div>
+            <div class="modal-content-s receiptModal" id="cancelReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">결제 취소</div>
+                    <button class="square30 icon" onclick="closeCancelReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" style="gap: 15px;">
+                    <div class="row-center"> 결제를 취소하시겠습니까? </div>
+                    <div class="row-center">
+                        <span>취소금액: </span>
+                        <span id="cancelReceiptPrice"></span>
+                    </div>
+                </div>
+                <div class="modal-foot justify-r">
+                    <button class="receiptStatus" style="width: 100px;" onclick="cancelReceipt()">확인</button>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="script">
+        <script src="/js/inputTime.js"></script>
+        <script src="/js/revenue/orderList.js"></script>
+        <script src="/js/modal/receipt.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/number.js"></script>
+    </span>
+
+</th:block>
+</html>

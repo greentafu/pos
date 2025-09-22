@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>출퇴근관리</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+        <link href="/styles/commute.css" rel="stylesheet">
+        <link href="/styles/modal.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-quarter">
+            <div class="box-quarter-left">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <div class="row-btw">
+                        <div class="rowName90">직원명 :</div>
+                        <div class="rowContent">
+                            <input type="text" id="searchInput">
+                        </div>
+                        <div class="rowName170 justify-r" id="commuteDate"></div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-90">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management">
+                                <thead>
+                                    <tr>
+                                        <th class="wth10">직원번호</th>
+                                        <th class="wth15">이름</th>
+                                        <th class="wth15">직급</th>
+                                        <th class="wth20">출근시간</th>
+                                        <th class="wth20">퇴근시간</th>
+                                        <th class="wth20">비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="padding2" style="flex-direction: column; display: none;" id="addPage">
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <div class="rowName70">조회기간 :</div>
+                            <input type="date" id="startDate">
+                            <span>~</span>
+                            <input type="date" id="endDate">
+                            <input type="radio" class="custom-radio" name="dateRadio" id="todayRadio" checked>
+                            <label for="todayRadio">오늘</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="weekRadio">
+                            <label for="weekRadio">금주</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="monthRadio">
+                            <label for="monthRadio">당월</label>
+                            <div style="min-width: 80px;">
+                                <button class="search" onclick="search()">조회</button>
+                            </div>
+                        </div>
+                        <div class="rowBtn">
+                            <button class="close" onclick="closeAddPage()">X</button>
+                        </div>
+                    </div>
+                    <div class="listBox-70">
+                        <div class="scrollTableBox" id="scrollArea2">
+                            <table class="management">
+                                <thead>
+                                    <tr>
+                                        <th class="wth10">직원번호</th>
+                                        <th class="wth15">이름</th>
+                                        <th class="wth15">직급</th>
+                                        <th class="wth20">출근시간</th>
+                                        <th class="wth20">퇴근시간</th>
+                                        <th class="wth20">비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="addInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp2" disabled>∧</button>
+                            <button class="scroll" id="scrollDown2" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="row-flex" style="white-space: nowrap;">
+                        <div class="grid-modifyCommute inputTimes">
+                            <div class="box">수정 전 출근시간:</div>
+                            <div class="box" id="beforeGoWork"></div>
+                            <div class="box icon text-c" style="font-size: 200%;">→</div>
+                            <div class="box">수정 후 출근시간:</div>
+                            <div class="box row-flex">
+                                <input type="text" style="text-align: center; font-size: 150%;" id="startH" oninput="limitHour(this)">
+                                <span style="font-size: 150%;">:</span>
+                                <input type="text" style="text-align: center; font-size: 150%;" id="startM" oninput="limitMinute(this)">
+                            </div>
+                            <div class="box-modifyBtn">
+                                <button onclick="updateCommuteTime()">수정</button>
+                            </div>
+                            <div class="box">수정 전 퇴근시간:</div>
+                            <div class="box" id="beforeGetOffWork"></div>
+                            <div class="box icon text-c" style="font-size: 200%;">→</div>
+                            <div class="box">수정 후 퇴근시간:</div>
+                            <div class="box row-flex">
+                                <input type="text" style="text-align: center; font-size: 150%;" id="endH" oninput="limitHour(this)">
+                                <span style="font-size: 150%;">:</span>
+                                <input type="text" style="text-align: center; font-size: 150%;" id="endM" oninput="limitMinute(this)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-quarter-right-top">
+                <div class="padding3" style="flex-direction: column; white-space: nowrap;">
+                    <div class="row-flex justify-l">
+                        <span style="margin-right: 5px;">직원명:</span>
+                        <span id="selectedName"></span>
+                    </div>
+                    <div class="row-flex">
+                        <div class="dip-row">
+                            <input type="password" id="employeePassword">
+                            <button id="goWork" onclick="goWork()" style="width:60px;">출근</button>
+                            <button id="getOffWork" onclick="getOffWork()" style="width:60px; display:none;">퇴근</button>
+                        </div>
+                        <div id="employeePhone" style="display: none;">
+                            <span style="margin-right: 5px;">전화번호:</span>
+                            <span id="selectedTel"></span>
+                        </div>
+                    </div>
+                    <div class="row-flex">
+                        <button onclick="openModal()">출퇴근 수정</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-quarter-right-bottom">
+                <div class="padding3" style="flex-direction: column;">
+                    <div class="row-btw justify-l" style="white-space: nowrap;">
+                        <span style="margin-right: 5px;">현재 출근자: </span>
+                        <span id="workingCount">0명</span>
+                    </div>
+                    <div class="row-flex" style="overflow: hidden;">
+                        <div class="listBox-95">
+                            <div class="scrollTableBox" id="scrollArea3">
+                                <table class="management">
+                                    <thead>
+                                        <tr>
+                                            <th class="wth50">직원번호</th>
+                                            <th class="wth50">이름</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="thirdInsertPoint"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal">
+        <div id="modalItem" class="modal" style="display: none;">
+            <div class="modal-content-s">
+                <div class="modal-header">
+                    <div class="modal-title">출퇴근수정</div>
+                    <button class="square30 icon" onclick="closeModal()">X</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row-flex justify-c" style="font-size: 120%; font-weight: bold;">
+                        관리자번호 입력
+                    </div>
+                    <div class="row-btw" style="min-height: 50px;">
+                        <input type="password" id="adminPassword">
+                        <button style="max-width: 100px;" onclick="checkAdmin()">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="script">
+        <script src="/js/commute.js"></script>
+        <script src="/js/number.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/modal/commute.js"></script>
+    </span>
+
+</th:block>
+</html>

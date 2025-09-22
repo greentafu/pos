@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>홈화면관리</title>
+        <link href="/styles/home.css" rel="stylesheet">
+        <link href="/styles/menuBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 왼쪽 화면 -->
+            <div class="box-wholeLeftPage">
+                <div class="padding1">
+                    <div class="grid-home">
+                        <div class="drag-cell"
+                             data-page='1'
+                             data-index='0'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='1'
+                             data-index='1'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="box-big home-fix">
+                            <div class="padding3" style="flex-direction: column; justify-content: space-between;">
+                                <table class="fix-table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>건</th>
+                                            <th>원</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-l">현금</td>
+                                            <td colspan="2">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-l">카드</td>
+                                            <td colspan="2">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-l">포인트</td>
+                                            <td colspan="2">0</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-l">총액</td>
+                                            <td>0건</td>
+                                            <td>0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="dip-row" style="height: 60px; width: 100%;">
+                                    <button class="fix-button">영업개시</button>
+                                    <button class="fix-button">영업마감</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="drag-cell"
+                             data-page='1'
+                             data-index='2'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='1'
+                             data-index='3'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='1'
+                             data-index='4'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='1'
+                             data-index='5'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="box-setting">
+                            <div class="home-fix">
+                                <img src="/icon/setting.png">
+                                <h2>기타관리</h2>
+                            </div>
+                        </div>
+                        <div class="box-end">
+                            <div class="home-fix">
+                                <img src="/icon/log_out.png">
+                                <h2>로그아웃</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-wholeRightPage">
+                <div class="padding1">
+                    <div class="grid-home">
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='0'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='1'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='2'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='3'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='4'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='5'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='6'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        ></div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='7'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        >
+                        </div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='8'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        >
+                        </div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='9'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        >
+                        </div>
+                        <div class="drag-cell"
+                             data-page='2'
+                             data-index='10'
+                             ondragover="allowDrop(event)"
+                             ondrop="drop(event)"
+                        >
+                        </div>
+                        <div class="box-end">
+                            <div class="home-fix">
+                                <img src="/icon/refresh.png">
+                                <h2>매장선택</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/screenButtonDrag.js"></script>
+    </span>
+
+</th:block>
+</html>

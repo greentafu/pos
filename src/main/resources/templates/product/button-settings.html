@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>메뉴관리-상품 버튼</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+        <link href="/styles/menuBlock.css" rel="stylesheet">
+        <link href="/styles/category.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-list-category">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="Product" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="rowName90">카테고리명 :</div>
+                        <div class="rowContent">
+                            <select class="custom-m" id="searchSelect">
+                                <option th:each="productCategoryDTO : ${productCategoryList}"
+                                        th:value="search+${productCategoryDTO.id}"
+                                        th:text="${productCategoryDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-85">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management selectTable">
+                                <thead>
+                                    <tr>
+                                        <th class="wth25">상품번호</th>
+                                        <th class="wth30">상품명</th>
+                                        <th class="wth30">카테고리</th>
+                                        <th class="wth15">가격</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-rightPage cor-w">
+                <div class="padding1" style="flex-direction: column; gap: 7px;">
+                    <div class="menuCategory">
+                        <div style="display:none;" id="firstCategory" th:text="${firstCategory}"></div>
+                        <div class="grid-menu-top" id="categoryBox">
+                            <div class="box-top" style="display: flex; flex-direction: row; gap: 5%;">
+                                <button class="icon" id="categoryPreBtn" onclick="getPreCategory()" disabled>＜</button>
+                                <button class="icon" id="categoryPostBtn" onclick="getPostCategory()" disabled>＞</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menuProduct">
+                        <div class="grid-menu-bottom" id="grid">
+                            <div class="drag-cell"
+                                 data-index='0'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='1'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='2'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='3'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='4'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='5'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='6'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='7'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='8'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='9'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='10'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='11'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='12'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='13'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='14'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='15'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='16'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='17'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='18'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='19'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='20'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='21'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='22'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='23'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='24'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='25'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='26'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            >
+                            </div>
+                            <div class="drag-cell"
+                                 data-index='27'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="drag-cell"
+                                 data-index='28'
+                                 ondragover="allowDrop(event)"
+                                 ondrop="drop(event)"
+                            ></div>
+                            <div class="box-bottom" style="display: flex; flex-direction: row; gap: 5%;">
+                                <button class="icon" id="menuPreBtn" onclick="getPreMenu()" disabled>＜</button>
+                                <button class="icon" id="menuPostBtn" onclick="getPostMenu()">＞</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-menu-save">
+                        <button class="manageBtn" id="resetBtn" onclick="resetMenuBtn()" disabled>되돌리기</button>
+                        <div></div>
+                        <button class="manageBtn" id="saveBtn" onclick="saveMenuBtn()" disabled>저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 저장삭제 -->
+            <div class="box-enter">
+                <div class="padding2" style="flex-direction: column;">
+                    <span id="idNumber" data-number="0" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="flex1" style="justify-content: start;">
+                            <label>상품명 :</label>
+                            <span style="white-space: nowrap;" id="name"></span>
+                            <span style="display:none;" id="price"></span>
+                        </div>
+                        <div class="flex1" style="justify-content: start;">
+                            <label>상품번호 :</label>
+                            <span style="white-space: nowrap;" id="number"></span>
+                        </div>
+                    </div>
+                    <div class="row-flex">
+                        <div class="flex3 justify-l" style="overflow: hidden; display:none;" id="colorBox">
+                            <label style="margin-right: 10px;">색상 :</label>
+                            <div class="row-center">
+                                <input type="checkbox" class="custom crudColor" style="background-color: white;" id="color0" onclick="changeColorBox(0)" checked>
+                                <input type="checkbox" class="custom crudColor" style="background-color: #BCCBF7;" id="color1" onclick="changeColorBox(1)">
+                                <input type="checkbox" class="custom crudColor" style="background-color: #FFC4C4;" id="color2" onclick="changeColorBox(2)">
+                                <input type="checkbox" class="custom crudColor" style="background-color: #D2FDD2;" id="color3" onclick="changeColorBox(3)">
+                                <input type="checkbox" class="custom crudColor" style="background-color: #FCFFD6;" id="color4" onclick="changeColorBox(4)">
+                                <input type="checkbox" class="custom crudColor" style="background-color: #FBCDFF;" id="color5" onclick="changeColorBox(5)">
+                            </div>
+                        </div>
+                        <div class="flex1 justify-r" style="display:none;" id="sizeBox">
+                            <label style="margin-right: 10px;">크기 :</label>
+                            <input type="checkbox" class="hidden crudSize" id="option1" onclick="changeSizeBox(1)" checked>
+                            <label for="option1" class="inline-block">1×1</label>
+                            <input type="checkbox" class="hidden crudSize" onclick="changeSizeBox(2)" id="option2">
+                            <label for="option2" class="inline-block">1×2</label>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" id="crudD_Btn" onclick="deleteBtn()" disabled>삭제</button>
+                        <button class="cud" id="crudCU_Btn" onclick="insertBtn()" disabled>배치</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/product/category-settings'">상품<br/>카테고리<br/>관리</button>
+                <button class="menu" onclick="location.href='/product/management'">상품<br/>관리</button>
+                <button class="menu selected">상품<br/>버튼<br/>관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/menu/product.js"></script>
+        <script src="/js/menu/menu.js"></script>
+        <script src="/js/scroll.js"></script>
+    </span>
+
+</th:block>
+</html>

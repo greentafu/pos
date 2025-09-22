@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>Home</title>
+        <link href="/styles/home.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-home">
+            <span id="pageName" data-name="page2" style="display: none;"></span>
+            <div class="box cor-lg" data-index='0'></div>
+            <div class="box cor-lg" data-index='1'></div>
+            <div class="box cor-lg" data-index='2'></div>
+            <div class="box cor-lg" data-index='3'></div>
+            <div class="box cor-lg" data-index='4'></div>
+            <div class="box cor-lg" data-index='5'></div>
+            <div class="box cor-lg" data-index='6'></div>
+            <div class="box cor-lg" data-index='7'></div>
+            <div class="box cor-lg" data-index='8'></div>
+            <div class="box cor-lg" data-index='9'></div>
+            <div class="box cor-lg" data-index='10'></div>
+            <div class="box">
+                <button class="home" onclick="location.href='/store/affiliation'" th:disabled="${recordStatus}">
+                    <img src="/icon/refresh.png">
+                    <h2>매장선택</h2>
+                </button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/screenButton.js"></script>
+    </span>
+
+</th:block>
+</html>

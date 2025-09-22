@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>매출관리-일자별</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <div class="box-wholePage">
+                <div class="padding1" style="flex-direction: column;">
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <div class="rowName70">조회기간 :</div>
+                            <input type="date" id="startDate">
+                            <span>~</span>
+                            <input type="date" id="endDate">
+                            <input type="radio" class="custom-radio" name="dateRadio" id="todayRadio" checked>
+                            <label for="todayRadio">오늘</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="weekRadio">
+                            <label for="weekRadio">금주</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="monthRadio">
+                            <label for="monthRadio">당월</label>
+                        </div>
+                        <div class="flex1 dip-row justify-r">
+                            <div class="rowName70">포스기 :</div>
+                            <select id="findPosNumber">
+                                <option value="0">전체</option>
+                                <option th:each="pos : ${posList}"
+                                        th:value="${pos.id}"
+                                        th:text="${pos.name}"
+                                        th:selected="${pos.id} == ${selectedPos}"
+                                >
+                                </option>
+                            </select>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <div class="rowName70">분류기준 :</div>
+                            <input type="radio" class="custom-radio" name="classification" value="0" id="day" checked>
+                            <label for="day">일별</label>
+                            <input type="radio" class="custom-radio" name="classification" value="1" id="dayOfWeek">
+                            <label for="dayOfWeek">요일별</label>
+                            <input type="radio" class="custom-radio" name="classification" value="2" id="month">
+                            <label for="month">월별</label>
+                            <input type="radio" class="custom-radio" name="classification" value="3" id="year">
+                            <label for="year">연별</label>
+                        </div>
+                        <div class="flex1 dip-row justify-r">
+                            <div style="min-width: 80px;">
+                                <button class="search" onclick="search()">조회</button>
+                            </div>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-80">
+                        <div class="scrollTableBox" id="scrollArea5">
+                            <table class="history">
+                                <thead>
+                                    <tr>
+                                        <th class="wth15">판매일자</th>
+                                        <th class="wth10">매출수량</th>
+                                        <th class="wth10">총매출금액</th>
+                                        <th class="wth10">할인금액</th>
+                                        <th class="wth10">매출금액</th>
+                                        <th class="wth10">부가세</th>
+                                        <th class="wth10">순매출금액</th>
+                                        <th class="wth10">매출원가</th>
+                                        <th class="wth10">이익금액</th>
+                                        <th class="wth5">이익률</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fifthInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp5" disabled>∧</button>
+                            <button class="scroll" id="scrollDown5" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="listBox-10">
+                        <div class="scrollTableBox">
+                            <table class="history">
+                                <thead>
+                                    <tr>
+                                        <td colspan="10">금액 관련 합계는 취소된 주문을 제외한 기준입니다</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="wth15" style="font-weight: 400;" id="summaryDate"></th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryTotalCount">0</th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryPrice">0</th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryDiscount">0</th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryPayment">0</th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryVat">0</th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryNet">0</th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryCost">0</th>
+                                        <th class="wth10" style="font-weight: 400;" id="summaryProfit">0</th>
+                                        <th class="wth5" style="font-weight: 400;" id="summaryPercent">0%</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/revenue/order-list'">판매 건별<br/>내역</button>
+                <button class="menu selected">일자별 매출<br/>내역</button>
+                <button class="menu" onclick="location.href='/revenue/menu-list'">메뉴별 매출<br/>내역</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/inputTime.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/number.js"></script>
+        <script src="/js/revenue/dateList.js"></script>
+    </span>
+
+</th:block>
+</html>

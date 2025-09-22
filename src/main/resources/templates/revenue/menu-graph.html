@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>매출관리-메뉴별</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <div class="box-wholePage">
+                <div class="padding1" style="flex-direction: column;">
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <div class="rowName70">조회기간 :</div>
+                            <input type="date" id="startDate">
+                            <span>~</span>
+                            <input type="date" id="endDate">
+                            <input type="radio" class="custom-radio" name="dateRadio" id="todayRadio" checked>
+                            <label for="todayRadio">오늘</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="weekRadio">
+                            <label for="weekRadio">금주</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="monthRadio">
+                            <label for="monthRadio">당월</label>
+                        </div>
+                        <div class="flex1 dip-row justify-r">
+                            <input type="radio" class="custom-radio" name="show" id="detail" onclick="location.href='/revenue/menu-list'">
+                            <label for="detail">상세보기</label>
+                            <input type="radio" class="custom-radio" name="show" id="simple" checked>
+                            <label for="simple">간략보기</label>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-r">
+                            <div style="min-width: 80px;">
+                                <button class="search" onclick="getPage()">조회</button>
+                            </div>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="dip-row" style="height: 75%;">
+                        <div style="height: 100%; width: 60%; background-color: #C0C0C0;">
+                            <canvas id="barChart" style="height: 100%; width: 100%;"></canvas>
+                        </div>
+                        <div style="height: 100%; width: 40%;">
+                            <div style="height: 10%; width: 100%;">
+                                <h2 style="display: flex; justify-content: center;">순이익률</h2>
+                            </div>
+                            <div style="height: 90%; width: 100%;">
+                                <canvas id="pieChart" style="height: 100%; width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/revenue/order-list'">판매 건별<br/>내역</button>
+                <button class="menu" onclick="location.href='/revenue/date-list'">일자별 매출<br/>내역</button>
+                <button class="menu selected">메뉴별 매출<br/>내역</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+        <script src="/js/revenue/menuChart.js"></script>
+        <script src="/js/inputTime.js"></script>
+        <script src="/js/number.js"></script>
+    </span>
+
+</th:block>
+</html>

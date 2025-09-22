@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>메뉴관리-옵션 카테고리</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+        <link href="/styles/category.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-list-category">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="Option" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="rowName90">카테고리명 :</div>
+                        <div class="rowContent">
+                            <input type="text" id="searchInput">
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-85">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management">
+                                <thead>
+                                    <tr>
+                                        <th>카테고리명</th>
+                                        <th>갯수</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-rightPage cor-w">
+                <div class="padding2" style="flex-direction: column;">
+                    <div class="row-flex" style="overflow:hidden; padding: 5px 0;">
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">배치되지 않은 카테고리</div>
+                            <div class="scrollBoxBar">
+                                <table class="category unplaced">
+                                    <tbody>
+                                        <tr class="sortableRow" id="nonPlacedTr"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="arrangementArrow">
+                            <button class="square30" id="toPlace" disabled>
+                                <img src="/icon/arrow_right.png">
+                            </button>
+                            <button class="square30" id="toNotPlace" disabled>
+                                <img src="/icon/arrow_left.png">
+                            </button>
+                        </div>
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">배치된 카테고리</div>
+                            <div class="scrollBoxBar">
+                                <table class="category placed">
+                                    <tbody>
+                                        <tr class="sortableRow" id="placedTr"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" style="width: 80px;" id="resetSortTable_Btn" onclick="resetSortTable()" disabled>되돌리기</button>
+                        <button class="cud" id="saveSortTable_Btn" onclick="saveSortTable()" disabled>저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 저장삭제 -->
+            <div class="box-enter">
+                <div class="padding2" style="flex-direction: column;">
+                    <span id="idNumber" data-number="0" style="display: none;"></span>
+                    <div class="row-flex">
+                        <div class="rowName90">카테고리명</div>
+                        <div class="rowContent" style="height: 80%;">
+                            <input type="text" id="name">
+                        </div>
+                    </div>
+                    <div class="row-flex">
+                        <div class="rowName90">복수선택</div>
+                        <div class="rowContent" style="height: 80%;">
+                            <div class="flex1">
+                                <label for="allow">허용</label>
+                                <input type="radio" id="allow" name="multi" checked>
+                            </div>
+                            <div class="flex1">
+                                <label for="notallow">비허용</label>
+                                <input type="radio" id="notallow" name="multi">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" id="crudD_Btn" onclick="deleteCrud()" disabled>삭제</button>
+                        <button class="cud" id="crudCU_Btn" onclick="saveCrud()">저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu selected">옵션<br/>카테고리<br/>관리</button>
+                <button class="menu" onclick="location.href='/option/management'">옵션<br/>관리</button>
+                <button class="menu" onclick="location.href='/option/button-settings'">옵션<br/>버튼<br/>관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+        <script type="module" src="/js/category_action.js"></script>
+        <script src="/js/category.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/sortTable.js"></script>
+    </span>
+
+</th:block>
+</html>

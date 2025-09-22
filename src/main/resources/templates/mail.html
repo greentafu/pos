@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>문자관리</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-wholeLeftPage">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="Mail" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="rowName90">제목 :</div>
+                        <div class="rowContent">
+                            <input type="text" id="searchInput">
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-90">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management selectTable">
+                                <thead>
+                                    <tr>
+                                        <th class="wth35">제목</th>
+                                        <th class="wth30">수정일</th>
+                                        <th class="wth35">비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-wholeRightPage">
+                <div class="padding2" style="flex-direction: column; justify-content: space-between;">
+                    <span id="idNumber" data-number="0" style="display: none;"></span>
+                    <div class="rows-box scrollBox">
+                        <div class="row-btw">
+                            <div class="rowName90">제목</div>
+                            <div class="rowContent">
+                                <input type="text" id="name">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">비고</div>
+                            <div class="rowContent">
+                                <input type="text" id="mailNote">
+                            </div>
+                        </div>
+                        <div class="row-flex">
+                            <div class="rowName90" style="align-items: start;">내용</div>
+                            <div class="rowContent">
+                                <textarea id="mailContent" oninput="checkByte(this)"></textarea>
+                            </div>
+                        </div>
+                        <div class="row-start">
+                            <div class="rowName90"></div>
+                            <span id="counter">0</span>
+                            <span>bytes / </span>
+                            <span id="mailType">SMS</span>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" id="crudD_Btn" onclick="deleteCrud()" disabled>삭제</button>
+                        <button class="cud" id="crudCU_Btn" onclick="saveCrud()">저장</button>
+                        <button class="cud" id="send_Btn" onclick="sendMail()" disabled>전송</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script type="module" src="/js/management_action.js"></script>
+        <script src="/js/management.js"></script>
+        <script src="/js/number.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script>
+            function checkByte(textarea) {
+                const mailType = document.getElementById('mailType');
+                const maxSMSByte = 90;
+                const maxLMSByte = 2000;
+
+                let text = textarea.value;
+                let byte = 0;
+                let cutIndex = text.length;
+
+                for (let i = 0; i < text.length; i++) {
+                    const char = text.charAt(i);
+                    byte += getByteLength(char);
+                    if (byte > maxLMSByte) {
+                        cutIndex = i;
+                        break;
+                    }
+                }
+
+                if (byte <= maxSMSByte) mailType.innerText = 'SMS';
+                else if (byte <= maxLMSByte) mailType.innerText = 'LMS';
+                else if (byte > maxLMSByte) {
+                    textarea.value = text.substring(0, cutIndex);
+                    byte = maxLMSByte;
+                    mailType.innerText = 'LMS';
+                }
+                document.getElementById("counter").innerText = byte;
+            }
+            function getByteLength(str) {
+                return new TextEncoder().encode(str).length;
+            }
+
+            function sendMail(){
+                console.log('문자 전송 함수');
+            }
+        </script>
+    </span>
+
+</th:block>
+</html>

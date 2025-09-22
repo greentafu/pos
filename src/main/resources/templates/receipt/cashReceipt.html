@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<html>
+    <head>
+        <title>영수증</title>
+    </head>
+    <body>
+        <div style="width: 58mm;">
+            <h3 style="width: 100%; display: flex; justify-content: center; margin-bottom: 20px;">현금영수증</h3>
+            <div style="padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px dashed black;">
+                <div>
+                    <span>[매장명]</span>
+                    <span th:text="${store.name}"></span>
+                </div>
+                <div>
+                    <span>[사업자]</span>
+                    <span th:text="${store.ownerDTO.regNumber}"></span>
+                </div>
+                <div>
+                    <span>[주 &nbsp; 소]</span>
+                    <span th:text="${store.location}"></span>
+                </div>
+                <div class="row-btw">
+                    <div>
+                        <span>[대표자]</span>
+                        <span th:text="${store.ownerDTO.name}"></span>
+                    </div>
+                    <div>
+                        <span>[TEL]</span>
+                        <span th:text="${store.telNumber}"></span>
+                    </div>
+                </div>
+                <div>
+                    <span>[매출일]</span>
+                    <span id="orderModDate"></span>
+                </div>
+                <div>
+                    <span>[영수증]</span>
+                    <span id="orderReceiptNumber"></span>
+                </div>
+            </div>
+            <table class="receipt">
+                <thead>
+                <tr>
+                    <td class="wth50"></td>
+                    <td class="wth50"></td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="tdLeft">카드명</td>
+                    <td id="cardName"></td>
+                </tr>
+                <tr>
+                    <td class="tdLeft">카드번호</td>
+                    <td id="cardNumber"></td>
+                </tr>
+                <tr>
+                    <td class="tdLeft">매입사명</td>
+                    <td id="cardCompany"></td>
+                </tr>
+                <tr>
+                    <td class="tdLeft">할부</td>
+                    <td id="cardMonth"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td class="dashed">금액</td>
+                    <td class="dashed" id="receiptPrice"></td>
+                </tr>
+                <tr>
+                    <td class="dashed">부가세</td>
+                    <td class="dashed" id="addPrice"></td>
+                </tr>
+                <tr>
+                    <td class="dashed">합계</td>
+                    <td class="dashed" id="totalPrice"></td>
+                </tr>
+                <tr>
+                    <td class="dashed">승인번호</td>
+                    <td class="dashed" id="authPrice"></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </body>
+</html>

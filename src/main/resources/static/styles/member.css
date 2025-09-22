@@ -1,0 +1,30 @@
+.grid-member-point {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.box-keyPad {
+    border-radius: 10px;
+    grid-column: 7 / span 6;
+    grid-row: 1 / span 2;
+    display: flex;
+    background-color: white;
+}
+.box-enter {
+    border-radius: 10px;
+    grid-column: 7 / span 6;
+    grid-row: 3 / span 7;
+    display: flex;
+    background-color: white;
+    overflow: hidden;
+}
+.box-bottom {
+    border-radius: 10px;
+    grid-column: 7 / span 6;
+    grid-row: 10 / span 3;
+    display: flex;
+}

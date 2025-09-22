@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>메뉴관리-옵션 버튼</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+        <link href="/styles/category.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-leftPage cor-w">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="OptionBtn" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="rowName90">카테고리명 :</div>
+                        <div class="rowContent">
+                            <select class="custom-m" id="searchSelect">
+                                <option th:each="optionCategoryDTO : ${optionCategoryList}"
+                                        th:value="search+${optionCategoryDTO.id}"
+                                        th:text="${optionCategoryDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-85">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management selectTable">
+                                <thead>
+                                    <tr>
+                                        <th class="wth25">옵션번호</th>
+                                        <th class="wth30">옵션명</th>
+                                        <th class="wth30">카테고리</th>
+                                        <th class="wth15">가격</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span id="crudD_Btn" style="display:none;"></span>
+            <span id="crudCU_Btn" style="display:none;"></span>
+            <span id="idNumber" data-number="0" style="display: none;"></span>
+            <!-- 오른쪽 화면 -->
+            <div class="box-rightPage cor-w">
+                <div class="padding2" style="flex-direction: column;">
+                    <div class="row-flex" style="overflow:hidden; padding: 5px 0;">
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">배치되지 않은 옵션</div>
+                            <div class="scrollBoxBar">
+                                <table class="category unplaced">
+                                    <tbody>
+                                        <tr class="sortableRow" id="nonPlacedTr"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="arrangementArrow">
+                            <button class="square30" id="toPlace" disabled>
+                                <img src="/icon/arrow_right.png">
+                            </button>
+                            <button class="square30" id="toNotPlace" disabled>
+                                <img src="/icon/arrow_left.png">
+                            </button>
+                        </div>
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">배치된 옵션</div>
+                            <div class="scrollBoxBar">
+                                <table class="category placed">
+                                    <tbody>
+                                        <tr class="sortableRow" id="placedTr"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" style="width: 80px;" id="resetSortTable_Btn" onclick="resetSortTable()" disabled>되돌리기</button>
+                        <button class="cud" id="saveSortTable_Btn" onclick="saveSortTable()" disabled>저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/option/category-settings'">옵션<br/>카테고리<br/>관리</button>
+                <button class="menu" onclick="location.href='/option/management'">옵션<br/>관리</button>
+                <button class="menu selected">옵션<br/>버튼<br/>관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+        <script type="module" src="/js/category_action.js"></script>
+        <script src="/js/category.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/sortTable.js"></script>
+    </span>
+
+</th:block>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>오류</title>
+        <link href="/styles/home.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-home">
+            <div class="box-backPage">
+                <button class="home" onclick="history.back()">
+                    <h2>뒤로가기</h2>
+                </button>
+            </div>
+            <div class="box-goHome">
+                <button class="home" onclick="location.href='/home/page1'">
+                    <h2>홈으로 이동</h2>
+                </button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script>
+            document.getElementById('posHome').style.display = 'none';
+            document.getElementById('posNumberText').style.display = 'none';
+        </script>
+    </span>
+
+</th:block>
+</html>

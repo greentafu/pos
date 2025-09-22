@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>영업마감</title>
+        <link href="/styles/keypad.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-quarter">
+            <div class="box-quarter-left">
+                <div class="padding2" style="flex-direction: column;">
+                    <div class="row-flex">
+                        <div class="row-flex" style="height: 100%; flex-direction: column;">
+                            <div class="row-fit justify-c" style="font-weight: bold; font-size: 110%;">마감 현금액</div>
+                            <table class="thine" style="height: 100%; width: 100%; font-size: 110%;">
+                                <thead>
+                                    <tr>
+                                        <th class="wth30">권종</th>
+                                        <th class="wth30">수량</th>
+                                        <th class="wth40">금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>50,000원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input50000" value="0">
+                                        </td>
+                                        <td id="td50000">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10,000원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input10000" value="0">
+                                        </td>
+                                        <td id="td10000">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5,000원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input5000" value="0">
+                                        </td>
+                                        <td id="td5000">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1,000원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input1000" value="0">
+                                        </td>
+                                        <td id="td1000">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td>500원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input500" value="0">
+                                        </td>
+                                        <td id="td500">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td>100원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input100" value="0">
+                                        </td>
+                                        <td id="td100">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td>50원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input50" value="0">
+                                        </td>
+                                        <td id="td50">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10원</td>
+                                        <td>
+                                            <input type="text" class="autoComma text-r" id="input10" value="0">
+                                        </td>
+                                        <td id="td10">0원</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">실현금</td>
+                                        <td id="tdTotal">0원</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">예상금액</td>
+                                        <td th:text="${cash}">0원</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="row-flex" style="height: 100%; flex-direction: column; justify-content: start;">
+                            <div class="row-fit justify-c" style="font-weight: bold; font-size: 110%;">카드매출액</div>
+                            <table class="thine" style="height: 31.5%; width: 100%; font-size: 110%;">
+                                <thead>
+                                    <tr>
+                                        <th class="wth40">종류</th>
+                                        <th class="wth60">금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>카드승인</td>
+                                        <td th:text="${allCard}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>카드취소</td>
+                                        <td th:text="${cancelCard}"></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>카드매출</td>
+                                        <td th:text="${card}"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row-fit justify-r">
+                        <button class="cud" style="width: 100px;" onclick="closeStore()">영업마감</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-quarter-right-top">
+                <div class="padding3" style="flex-direction: column;">
+                    <div style="display:none;" id="recordId" th:text="${recordId}"></div>
+                    <div class="row-flex justify-l">
+                        <div class="rowName70">포스기</div>
+                        <div class="rowContent" style="margin-left: 10px;" th:text="${pos.number}"></div>
+                    </div>
+                    <div class="row-flex">
+                        <div class="rowName70">아이디</div>
+                        <select class="rowContent" style="margin-left: 10px;" id="employeeId">
+                            <option th:each="employee : ${employeeList}"
+                                    th:value="${employee.loginDTO.userId}"
+                                    th:text="${employee.loginDTO.userId}"
+                            >
+                            </option>
+                        </select>
+                    </div>
+                    <div class="row-flex">
+                        <div class="rowName70">비밀번호</div>
+                        <div class="rowContent">
+                            <input type="password" style="margin-left: 10px;" id="employeePw">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-quarter-right-bottom">
+                <div class="padding3" style="flex-direction: column;">
+                    <div class="grid-keyPad1" style="font-size: 150%;">
+                        <button class="keyPad" id="numBtn1">1</button>
+                        <button class="keyPad" id="numBtn2">2</button>
+                        <button class="keyPad" id="numBtn3">3</button>
+                        <button class="keyPad" id="numBtn4">4</button>
+                        <button class="keyPad" id="numBtn5">5</button>
+                        <button class="keyPad" id="numBtn6">6</button>
+                        <button class="keyPad" id="numBtn7">7</button>
+                        <button class="keyPad" id="numBtn8">8</button>
+                        <button class="keyPad" id="numBtn9">9</button>
+                        <button class="keyPad" id="numBtn0">0</button>
+                        <button class="keyPad" id="numBtnDelete">
+                            <img src="/icon/delete.png" style="height: 30%;">
+                        </button>
+                        <button class="keyPad" id="numBtnC">C</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/number.js"></script>
+        <script src="/js/openClose.js"></script>
+    </span>
+
+</th:block>
+</html>

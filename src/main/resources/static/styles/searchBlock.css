@@ -1,0 +1,182 @@
+.listBox-5 {
+    height: 5%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-10 {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-70 {
+    height: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-75 {
+    min-height: 75%;
+    max-height: 75%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-80 {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-85 {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-90 {
+    height: 90%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-95 {
+    height: 95%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+.listBox-100 {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+    box-sizing: border-box;
+}
+
+.scrollTableBox{
+    flex: 1;
+    overflow: auto;
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE/Edge */
+}
+.scrollTableBox::-webkit-scrollbar {
+    display: none;               /* Chrome, Safari */
+}
+.scrollTableBox2{
+    flex: 1;
+    overflow: auto;
+    width: 100%;
+}
+.scrollTableBox2::-webkit-scrollbar {
+    width: 10px;
+}
+.scrollTableBox2::-webkit-scrollbar-thumb:horizontal {
+    background: #C0C0C0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.scrollTableBox2::-webkit-scrollbar-track:horizontal {
+    background: #EBEBEB;
+}
+.scrollTableBox3{
+    flex: 1;
+    overflow: auto;
+    width: 100%;
+}
+.scrollTableBox3::-webkit-scrollbar {
+    width: 10px;
+}
+.scrollTableBox3::-webkit-scrollbar-thumb:vertical {
+    background: #C0C0C0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.scrollTableBox3::-webkit-scrollbar-track:vertical {
+    background: #EBEBEB;
+}
+.scrollBtnBox{
+    height: 100%;
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* table */
+table.management {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    text-align: center;
+    border-left: 5px solid #EBEBEB;
+    border-right: 5px solid #EBEBEB;
+}
+table.management thead th {
+    height: 35px;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+    padding: 1px;
+    border-top: 5px solid #EBEBEB;
+    border-bottom: 5px solid #EBEBEB;
+    box-sizing: border-box;
+}
+table.management tbody td {
+    height: 30px;
+    padding: 1px;
+    border-bottom: 5px solid #EBEBEB;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+table.management tr.table-noLine td {
+    border-bottom: none;
+}
+table.management tr.area2:active {
+    background-color: #81ACEC;
+}
+
+table.history {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    font-size: 90%;
+    white-space: nowrap;
+}
+table.history thead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+    padding: 1px;
+    border: 1px solid black;
+    background-color: #C0C0C0;
+}
+table.history tbody td {
+    padding: 1px;
+    border: 1px solid black;
+    text-align: center;
+    cursor: pointer;
+}
+table.history tr.table-noLine td {
+    border-bottom: none;
+}

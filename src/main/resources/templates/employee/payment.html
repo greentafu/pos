@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>직원관리-급여</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-wholePage">
+                <div class="padding1" style="flex-direction: column;">
+                    <span id="pageName" data-name="payment" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <div class="rowName70">조회기간 :</div>
+                            <input type="date" id="startDate">
+                            <span>~</span>
+                            <input type="date" id="endDate">
+                            <input type="radio" class="custom-radio" name="dateRadio" id="todayRadio" checked>
+                            <label for="todayRadio">오늘</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="weekRadio">
+                            <label for="weekRadio">금주</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="monthRadio">
+                            <label for="monthRadio">당월</label>
+                        </div>
+                        <div class="flex1 dip-row justify-r">
+                            <input type="radio" class="custom-radio" name="show" id="detail" onchange="showDetail()" checked>
+                            <label for="detail">상세보기</label>
+                            <input type="radio" class="custom-radio" name="show" id="simple" onchange="showSimple()">
+                            <label for="simple">간략보기</label>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="flex1 dip-row justify-l">
+                            <div class="rowName70">시 &nbsp; &nbsp; &nbsp;급 :</div>
+                            <select class="custom-m" id="perWage">
+                                <option value="0">전체</option>
+                                <option th:each="wageDTO : ${wageList}"
+                                        th:value="${wageDTO.id}"
+                                        th:text="${wageDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="flex1"></div>
+                        <div class="flex1 dip-row justify-r">
+                            <div class="dip-row" style="min-width: 150px;">
+                                <span class="rowName70">조회사원 :</span>
+                                <input type="text" id="searchName">
+                            </div>
+                            <div style="min-width: 80px;">
+                                <button class="search" onclick="search()">조회</button>
+                            </div>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-80" id="defaultPage">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="history">
+                                <thead>
+                                    <tr>
+                                        <th class="wth15">근무일자</th>
+                                        <th class="wth10">직원번호</th>
+                                        <th class="wth10">직원명</th>
+                                        <th class="wth10">시급구분</th>
+                                        <th class="wth15">출근시간</th>
+                                        <th class="wth15">퇴근시간</th>
+                                        <th class="wth15">근무시간</th>
+                                        <th class="wth10">시급금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="listBox-80" id="addPage" style="display:none;">
+                        <div class="scrollTableBox2" id="scrollArea2">
+                            <table class="history">
+                                <thead>
+                                    <tr id="headTr">
+                                        <th class="fixTh" style="min-width: 50px;">직원번호</th>
+                                        <th class="fixTh" style="min-width: 100px;">직원명</th>
+                                        <th class="fixTh" style="min-width: 120px;">급여</th>
+                                        <th class="fixTh" style="min-width: 180px;">근무기간</th>
+                                        <th class="fixTh" style="min-width: 70px;">근무일수</th>
+                                        <th class="fixTh" style="min-width: 70px;">근무시간</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="addInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp2" disabled>∧</button>
+                            <button class="scroll" id="scrollDown2" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/employee/management'">직원 관리</button>
+                <button class="menu" onclick="location.href='/employee/position'">직급 관리</button>
+                <button class="menu" onclick="location.href='/employee/wage'">시급 관리</button>
+                <button class="menu selected">급여 관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/isSameOrBefore.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/payment.js"></script>
+    </span>
+
+</th:block>
+</html>

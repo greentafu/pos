@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:fragment="all(head, content, modal, script)">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/styles/head.css" rel="stylesheet">
+        <th:block th:replace="${head}"></th:block>
+    </head>
+    <body>
+        <div class="headBox">
+            <div class="head-btn">
+                <img src="/icon/home.png" class="separateListEvent" id="posHome" onclick="location.href='/home/page1'">
+            </div>
+            <div class="head-store">
+                <h3 id="posName"></h3>
+            </div>
+            <div class="head-pos">
+                <h3 id="posNumberText">포스번호 : </h3>
+                <h3 th:if="${selectedPos!=0}" th:text="${selectedPos}"></h3>
+            </div>
+            <div class="head-date">
+                <h3 id="posDate" style="margin-right: 5px;"></h3>
+                <h2 id="posTime" class="fcor-o"></h2>
+            </div>
+        </div>
+        <div class="contentBox">
+            <th:block th:replace="${content}"></th:block>
+        </div>
+        <th:block th:replace="${modal}"></th:block>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="/js/basic.js"></script>
+        <th:block th:replace="${script}"></th:block>
+    </body>
+</th:block>
+</html>

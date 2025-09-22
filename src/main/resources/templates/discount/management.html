@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>할인관리-할인</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-leftPage cor-w">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="Discount" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="rowName90">할인명 :</div>
+                        <div class="rowContent">
+                            <input type="text" id="searchInput">
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="rowName90">카테고리명 :</div>
+                        <div class="rowContent">
+                            <select class="custom-m" id="searchSelect">
+                                <option value="search0" selected>전체보기</option>
+                                <option th:each="discountCategoryDTO : ${discountCategoryList}"
+                                        th:value="search+${discountCategoryDTO.id}"
+                                        th:text="${discountCategoryDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-80">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management selectTable">
+                                <thead>
+                                    <tr>
+                                        <th class="wth25">할인번호</th>
+                                        <th class="wth30">할인명</th>
+                                        <th class="wth30">카테고리</th>
+                                        <th class="wth15">할인</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-rightPage cor-w">
+                <div class="padding2" style="flex-direction: column; justify-content: space-between;">
+                    <span id="idNumber" data-number="0" style="display: none;"></span>
+                    <div class="rows-box scrollBox">
+                        <div class="row-btw">
+                            <div class="rowName90">할인번호</div>
+                            <div class="rowContent">
+                                <input type="text" id="number">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">카테고리</div>
+                            <div class="rowContent">
+                                <select class="custom-m" id="category">
+                                    <option th:each="discountCategoryDTO : ${discountCategoryList}"
+                                            th:value="category+${discountCategoryDTO.id}"
+                                            th:text="${discountCategoryDTO.name}">
+                                    </option>
+                                </select>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">할인명</div>
+                            <div class="rowContent">
+                                <input type="text" id="name">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">표시명</div>
+                            <div class="rowContent">
+                                <input type="text" id="displayName">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">할인규칙</div>
+                            <div class="rowContent">
+                                <div class="rowContent" style="height: 80%;">
+                                    <div class="flex1">
+                                        <input type="radio" id="perCount" name="rule" checked>
+                                        <label for="percent">수량에 적용</label>
+                                    </div>
+                                    <div class="flex1">
+                                        <input type="radio" id="perProduct" name="rule">
+                                        <label for="amount">품목에 적용</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">할인율</div>
+                            <div class="rowContent">
+                                <div class="rowContent" style="height: 80%;">
+                                    <div class="flex1">
+                                        <input type="radio" id="amount" name="sale" onchange="changeUnit()" checked>
+                                        <label for="amount">금액</label>
+                                    </div>
+                                    <div class="flex1">
+                                        <input type="radio" id="percent" name="sale" onchange="changeUnit()">
+                                        <label for="percent">비율</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90"></div>
+                            <div class="rowContent">
+                                <div class="overlap-box">
+                                    <input type="text"
+                                           class="autoComma overlap-input"
+                                           id="price"
+                                           oninput="formatAutoComma(this)"
+                                    >
+                                    <span class="overlap-span" id="won">원</span>
+                                    <span class="overlap-span" id="per" style="display: none;">%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" id="crudD_Btn" onclick="deleteCrud()" disabled>삭제</button>
+                        <button class="cud" id="crudCU_Btn" onclick="saveCrud()">저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/discount/category-settings'">할인<br/>카테고리<br/>관리</button>
+                <button class="menu selected">할인<br/>관리</button>
+                <button class="menu" onclick="location.href='/discount/button-settings'">할인<br/>버튼<br/>관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script type="module" src="/js/management_action.js"></script>
+        <script src="/js/management.js"></script>
+        <script src="/js/number.js"></script>
+        <script src="/js/scroll.js"></script>
+    </span>
+
+</th:block>
+</html>

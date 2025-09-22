@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>직원관리-직급</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+        <link href="/styles/employee.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-leftPage cor-w">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="Position" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="rowName90">직급명 :</div>
+                        <div class="rowContent">
+                            <input type="text" id="searchInput">
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-90">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management selectTable">
+                                <thead>
+                                    <tr>
+                                        <th class="wth40">직급명</th>
+                                        <th class="wth30">시급</th>
+                                        <th class="wth30">소속인원</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-rightPage cor-w">
+                <div class="padding2" style="flex-direction: column; justify-content: space-between;">
+                    <span id="idNumber" data-number="0" style="display: none;"></span>
+                    <div class="rows-box scrollBox">
+                        <div class="row-btw">
+                            <div class="rowName90">직급명</div>
+                            <div class="rowContent">
+                                <input type="text" id="name">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">시급</div>
+                            <div class="rowContent">
+                                <select class="custom-m" id="perWage">
+                                    <option th:each="wageDTO : ${wageList}"
+                                            th:value="${wageDTO.id}"
+                                            th:text="${wageDTO.name}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row-flex">
+                            <div class="rowName90" style="align-items: start;">화면권한</div>
+                            <div class="rowContent">
+                                <div class="grid-authorization">
+                                    <div class="box-auth">
+                                        <span>매출관리</span>
+                                        <input type="checkbox" class="switch" id="screen4" checked>
+                                        <label for="screen4" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>품절관리</span>
+                                        <input type="checkbox" class="switch" id="screen2" checked>
+                                        <label for="screen2" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>재고관리</span>
+                                        <input type="checkbox" class="switch" id="screen3" checked>
+                                        <label for="screen3" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>상품관리</span>
+                                        <input type="checkbox" class="switch" id="screen7" checked>
+                                        <label for="screen7" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>옵션관리</span>
+                                        <input type="checkbox" class="switch" id="screen8" checked>
+                                        <label for="screen8" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>할인관리</span>
+                                        <input type="checkbox" class="switch" id="screen9" checked>
+                                        <label for="screen9" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>회원관리</span>
+                                        <input type="checkbox" class="switch" id="screen5" checked>
+                                        <label for="screen5" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>직원관리</span>
+                                        <input type="checkbox" class="switch" id="screen12" checked>
+                                        <label for="screen12" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>가게관리</span>
+                                        <input type="checkbox" class="switch" id="screen11" checked>
+                                        <label for="screen11" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>문자관리</span>
+                                        <input type="checkbox" class="switch" id="screen13" checked>
+                                        <label for="screen13" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                    <div class="box-auth">
+                                        <span>홈화면관리</span>
+                                        <input type="checkbox" class="switch" id="screen10" checked>
+                                        <label for="screen10" class="switch">
+                                            <span class="on">허용</span>
+                                            <span class="off">제한</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" id="crudD_Btn" onclick="deleteCrud()" disabled>삭제</button>
+                        <button class="cud" id="crudCU_Btn" onclick="saveCrud()">저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/employee/management'">직원 관리</button>
+                <button class="menu selected">직급 관리</button>
+                <button class="menu" onclick="location.href='/employee/wage'">시급 관리</button>
+                <button class="menu" onclick="location.href='/employee/payment'">급여 관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script type="module" src="/js/management_action.js"></script>
+        <script src="/js/management.js"></script>
+        <script src="/js/number.js"></script>
+        <script src="/js/scroll.js"></script>
+    </span>
+
+</th:block>
+</html>

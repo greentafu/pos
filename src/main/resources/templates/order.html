@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>주문관리</title>
+        <link href="/styles/category.css" rel="stylesheet">
+        <link href="/styles/keypad.css" rel="stylesheet">
+        <link href="/styles/menuBlock.css" rel="stylesheet">
+        <link href="/styles/modal.css" rel="stylesheet">
+        <link href="/styles/order.css" rel="stylesheet">
+        <link href="/styles/revenue.css" rel="stylesheet">
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+        <link href="/styles/soldout.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-list">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="Order" style="display: none;"></span>
+                    <div class="listBox-90" style="overflow: hidden;">
+                        <div class="scrollTableBox mixedEvent separateListEvent" id="scrollArea">
+                            <table class="order">
+                                <thead>
+                                    <tr>
+                                        <th class="wth5"></th>
+                                        <th style="wth25">메뉴</th>
+                                        <th class="wth15">단가</th>
+                                        <th class="wth20">수량</th>
+                                        <th class="wth15">할인</th>
+                                        <th class="wth20">금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="row-btw">
+                        <table class="orderResult" style="height: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="wth15">결제금액:</td>
+                                    <td class="wth25" id="totalPayment" style="font-weight: bold;"></td>
+                                    <td class="wth5">┃</td>
+                                    <td class="wth20" id="totalCount"></td>
+                                    <td class="wth15" id="totalDiscount"></td>
+                                    <td class="wth20" id="totalPrice"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="rowBtn"></div>
+                    </div>
+                </div>
+                <div class="padding2" style="flex-direction: column; display:none;" id="addPage">
+                    <div class="listBox-90" style="overflow: hidden;">
+                        <div class="scrollTableBox" id="scrollArea2">
+                            <table class="order">
+                                <thead>
+                                    <tr>
+                                        <th class="wth5"></th>
+                                        <th style="wth25">메뉴</th>
+                                        <th class="wth15">단가</th>
+                                        <th class="wth20">수량</th>
+                                        <th class="wth15">할인</th>
+                                        <th class="wth20">금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="addInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp2" disabled>∧</button>
+                            <button class="scroll" id="scrollDown2" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="row-btw">
+                        <table class="orderResult" style="height: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="wth15">결제금액:</td>
+                                    <td class="wth25" id="totalPayment2" style="font-weight: bold;"></td>
+                                    <td class="wth5">┃</td>
+                                    <td class="wth20" id="totalCount2"></td>
+                                    <td class="wth15" id="totalDiscount2"></td>
+                                    <td class="wth20" id="totalPrice2"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="rowBtn"></div>
+                    </div>
+                </div>
+                <div class="padding2" style="flex-direction: column; display:none;" id="thirdPage">
+                    <div class="listBox-90" style="overflow: hidden;">
+                        <div class="scrollTableBox" id="scrollArea3">
+                            <table class="order">
+                                <thead>
+                                    <tr>
+                                        <th class="wth5"></th>
+                                        <th style="wth25">메뉴</th>
+                                        <th class="wth15">단가</th>
+                                        <th class="wth20">수량</th>
+                                        <th class="wth15">할인</th>
+                                        <th class="wth20">금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="thirdInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp3" disabled>∧</button>
+                            <button class="scroll" id="scrollDown3" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="row-btw">
+                        <table class="orderResult" style="height: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="wth15">결제금액:</td>
+                                    <td class="wth25" id="totalPayment3" style="font-weight: bold;"></td>
+                                    <td class="wth5">┃</td>
+                                    <td class="wth20" id="totalCount3"></td>
+                                    <td class="wth15" id="totalDiscount3"></td>
+                                    <td class="wth20" id="totalPrice3"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="rowBtn"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴 -->
+            <div class="box-menu">
+                <div class="padding1" style="flex-direction: column; gap: 7px;" id="menu">
+                    <div class="menuCategory">
+                        <div style="display:none;" id="firstCategory" th:text="${firstCategory}"></div>
+                        <div class="grid-menu-top" id="categoryBox">
+                            <div class="box-top" style="display: flex; flex-direction: row; gap: 5%;">
+                                <button class="icon" id="categoryPreBtn" onclick="getPreCategory()" disabled>＜</button>
+                                <button class="icon" id="categoryPostBtn" onclick="getPostCategory()" disabled>＞</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menuProduct">
+                        <div class="grid-menu-bottom" id="grid">
+                            <div class="drag-cell" data-index='0'></div>
+                            <div class="drag-cell" data-index='1'></div>
+                            <div class="drag-cell" data-index='2'></div>
+                            <div class="drag-cell" data-index='3'></div>
+                            <div class="drag-cell" data-index='4'></div>
+                            <div class="drag-cell" data-index='5'></div>
+                            <div class="drag-cell" data-index='6'></div>
+                            <div class="drag-cell" data-index='7'></div>
+                            <div class="drag-cell" data-index='8'></div>
+                            <div class="drag-cell" data-index='9'></div>
+                            <div class="drag-cell" data-index='10'></div>
+                            <div class="drag-cell" data-index='11'></div>
+                            <div class="drag-cell" data-index='12'></div>
+                            <div class="drag-cell" data-index='13'></div>
+                            <div class="drag-cell" data-index='14'></div>
+                            <div class="drag-cell" data-index='15'></div>
+                            <div class="drag-cell" data-index='16'></div>
+                            <div class="drag-cell" data-index='17'></div>
+                            <div class="drag-cell" data-index='18'></div>
+                            <div class="drag-cell" data-index='19'></div>
+                            <div class="drag-cell" data-index='20'></div>
+                            <div class="drag-cell" data-index='21'></div>
+                            <div class="drag-cell" data-index='22'></div>
+                            <div class="drag-cell" data-index='23'></div>
+                            <div class="drag-cell" data-index='24'></div>
+                            <div class="drag-cell" data-index='25'></div>
+                            <div class="drag-cell" data-index='26'></div>
+                            <div class="drag-cell" data-index='27'></div>
+                            <div class="drag-cell" data-index='28'></div>
+                            <div class="box-bottom" style="display: flex; flex-direction: row; gap: 5%;">
+                                <button class="icon" id="menuPreBtn" onclick="getPreMenu()" disabled>＜</button>
+                                <button class="icon" id="menuPostBtn" onclick="getPostMenu()">＞</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="padding1" style="flex-direction: column; display: none; justify-content: space-between;" id="menu_payment">
+                    <div class="row-btw">
+                        <div class="rowContent" style="font-size: 130%; font-weight: bold;">
+                            <span id="menu_payment_title">현금 결제</span>
+                        </div>
+                        <div class="rowBtn">
+                            <button class="close menuClose separateListEvent" onclick="openMenu('menu')" id="close_toMenu">X</button>
+                            <button class="close menuClose" onclick="openMenu('payment_separate')" id="close_toSeparate">X</button>
+                            <button class="close menuClose" onclick="openMenu('payment_mixed')" id="close_toMixed">X</button>
+                        </div>
+                    </div>
+                    <hr class="bord2">
+                    <div class="row-flex" style="gap: 7px; flex-direction: column; justify-content: start;">
+                        <div class="row-amount">
+                            <div class="row-menu">
+                                <span class="row-title">미결제금액</span>
+                                <div class="row-content">
+                                    <span style="margin-right: 10px;" id="nonPaymentPrice"></span>
+                                    <button class="cud" onclick="paymentAllPrice()">전액</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-menu">
+                            <span class="row-title">결제금액</span>
+                            <div class="row-content">
+                                <input type="text" class="autoComma paymentInput text-r fcor-r" value="0" id="paymentCashPrice" oninput="formatAutoComma(this); changePaymentCashPrice();">
+                                <input type="text" class="autoComma paymentInput text-r fcor-r" value="0" id="paymentCardPrice" oninput="formatAutoComma(this); changePaymentCardPrice();">
+                                <input type="text" class="autoComma paymentInput text-r fcor-r" value="0" id="paymentPointPrice" oninput="formatAutoComma(this); changePaymentPointPrice();">
+                            </div>
+                        </div>
+                        <div class="flex1" style="width: 100%; justify-content: start; align-items: start;">
+                            <div class="row-flex menuContent" style="gap: 7px; flex-direction: column; justify-content: start;" id="payment_cash">
+                                <div class="row-menu">
+                                    <span class="row-title">거스름돈</span>
+                                    <div class="row-content">
+                                        <span id="paymentCashChange"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-flex menuContent" style="gap: 7px; flex-direction: column; justify-content: start;" id="payment_card">
+                                <div class="row-menu">
+                                    <span class="row-title">· 카드사</span>
+                                    <div class="row-content">
+                                        <input type="text" style="border-radius: 5px;" id="cardCompany">
+                                    </div>
+                                </div>
+                                <div class="row-menu">
+                                    <span class="row-title">· 카드번호</span>
+                                    <div class="row-content">
+                                        <input type="text" style="border-radius: 5px; text-align: start;" id="cardNumber" oninput="onlyNumber(this)">
+                                    </div>
+                                </div>
+                                <div class="row-menu">
+                                    <span class="row-title">· 할부개월</span>
+                                    <div class="row-content">
+                                        <input type="number" style="border-radius: 5px; text-align: start;" value="0" min="0" id="cardMonth" oninput="onlyNumber(this)">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-flex menuContent" style="gap: 7px; flex-direction: column; justify-content: start;" id="payment_point">
+                                <div class="row-menu">
+                                    <span class="row-title">회원번호</span>
+                                    <div class="row-content" style="gap: 3px;">
+                                        <input type="text" class="phoneNumber" maxlength="13" id="memberInput2" oninput="formatPhoneNumber(this); resetMemberSearch(2);">
+                                        <button style="width: fit-content;" onclick="getMember(2)">조회</button>
+                                    </div>
+                                </div>
+                                <div class="row-menu">
+                                    <div class="dip-row" style="width: 100%;" id="memberRecent2">
+                                        <span class="row-title"></span>
+                                        <div class="row-content" style="gap: 3px;">
+                                            <button class="flex1" onclick="searchRecentMember(2)">최근 조회</button>
+                                        </div>
+                                    </div>
+                                    <div class="dip-row" style="width: 100%; display: none;" id="memberPointScreen2">
+                                        <span class="row-title">보유포인트</span>
+                                        <div class="row-content" style="gap: 3px;" id="memberPoint2"></div>
+                                    </div>
+                                    <div class="dip-row justify-c" style="width: 100%; display: none;" id="memberNewScreen2">
+                                        <span class="align-c fcor-r" style="white-space: nowrap;">존재하지 않는 회원입니다</span>
+                                        <button style="width: fit-content;" onclick="saveMember(2)">신규저장</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-flex menuContent" style="height:250px; gap: 7px; flex-direction: column; justify-content: start;" id="payment_separate">
+                                <div class="row-menu" style="margin-bottom: 10px;">
+                                    <span class="row-title">결제수단</span>
+                                    <div class="row-content" style="justify-content: space-between; gap: 5px;">
+                                        <button class="flex1" onclick="openMenu('payment_separate_cash')">현금</button>
+                                        <button class="flex1" onclick="openMenu('payment_separate_card')">카드</button>
+                                        <button class="flex1" onclick="openMenu('payment_separate_point')">포인트</button>
+                                    </div>
+                                </div>
+                                <div class="scrollTableBox3" style="width: 100%;">
+                                    <table class="management">
+                                        <thead>
+                                            <tr>
+                                                <th class="wth5"></th>
+                                                <th class="wth10">결제수단</th>
+                                                <th class="wth30">카드번호</th>
+                                                <th class="wth15">승인금액</th>
+                                                <th class="wth25">승인번호</th>
+                                                <th class="wth15">처리상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="separateInsertPoint"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row-flex menuContent" style="height:250px; gap: 7px; flex-direction: column; justify-content: start;" id="payment_mixed">
+                                <div class="row-menu" style="margin-bottom: 10px;">
+                                    <span class="row-title">결제수단</span>
+                                    <div class="row-content" style="justify-content: space-between; gap: 5px;">
+                                        <button class="flex1" onclick="openMenu('payment_mixed_cash')">현금</button>
+                                        <button class="flex1" onclick="openMenu('payment_mixed_card')">카드</button>
+                                        <button class="flex1" onclick="openMenu('payment_mixed_point')">포인트</button>
+                                    </div>
+                                </div>
+                                <div class="scrollTableBox3" style="width: 100%;">
+                                    <table class="management">
+                                        <thead>
+                                            <tr>
+                                                <th class="wth5"></th>
+                                                <th class="wth10">결제수단</th>
+                                                <th class="wth30">카드번호</th>
+                                                <th class="wth15">승인금액</th>
+                                                <th class="wth25">승인번호</th>
+                                                <th class="wth15">처리상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="mixedInsertPoint"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit paymentBtn" id="saveCashPaymentBtn">
+                        <button class="payment menuSave" onclick="openMenu('cash_receipt')">현금영수증 발행</button>
+                        <button class="payment menuSave" onclick="savePayment('cash')">단순 결제</button>
+                    </div>
+                    <div class="row-fit paymentBtn justify-r" id="saveCardPaymentBtn">
+                        <button class="payment menuSave" onclick="savePayment('card')">카드 결제</button>
+                    </div>
+                    <div class="row-fit paymentBtn justify-r" id="savePointPaymentBtn">
+                        <button class="payment menuSave" id="pointPaymentBtn" onclick="savePayment('point')" disabled>포인트 결제</button>
+                    </div>
+                </div>
+                <div class="padding1" style="flex-direction: column; display: none; justify-content: space-between;" id="cash_receipt">
+                    <div class="row-btw">
+                        <div class="rowContent" style="font-size: 130%; font-weight: bold;">
+                            <span>현금영수증 발행</span>
+                        </div>
+                        <div class="rowBtn">
+                            <button class="close menuClose" onclick="openMenu('payment_cash')" id="close_toMenu2">X</button>
+                            <button class="close menuClose" onclick="openMenu('payment_separate_cash')" id="close_toSeparate2">X</button>
+                            <button class="close menuClose" onclick="openMenu('payment_mixed_cash')" id="close_toMixed2">X</button>
+                        </div>
+                    </div>
+                    <hr class="bord2">
+                    <div class="row-flex" style="gap: 7px; flex-direction: column; justify-content: start;">
+                        <div class="row-amount">
+                            <div class="row-menu">
+                                <span class="row-title">발행가능금액</span>
+                                <div class="row-content">
+                                    <span style="margin-right: 10px;" id="cashReceiptPrice"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-menu">
+                            <span class="row-title">발행금액</span>
+                            <div class="row-content">
+                                <input type="text" class="autoComma text-r fcor-r" value="0" id="receiptIssuePrice" oninput="formatAutoComma(this); changeCashReceiptPrice();">
+                            </div>
+                        </div>
+                        <div class="row-menu">
+                            <span class="row-title">발급종류</span>
+                            <div class="row-content">
+                                <input type="radio" name="receiptType" id="individual" checked>
+                                <label for="individual" style="margin-right: 5;">개인</label>
+                                <input type="radio" name="receiptType" id="business">
+                                <label for="business" style="margin-right: 5;">사업자</label>
+                            </div>
+                        </div>
+                        <div class="row-menu">
+                            <span class="row-title">발급번호</span>
+                            <div class="row-content">
+                                <input type="number" id="receiptNumber">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit justify-r">
+                        <button class="payment" onclick="savePayment('receipt')">결제 완료</button>
+                    </div>
+                </div>
+                <div class="padding1" style="flex-direction: column; display: none; justify-content: space-between;" id="search_member">
+                    <div class="row-btw">
+                        <div class="rowContent" style="font-size: 130%; font-weight: bold;">회원 조회</div>
+                        <div class="rowBtn">
+                            <button class="close" onclick="openMenu('menu')">X</button>
+                        </div>
+                    </div>
+                    <hr class="bord2">
+                    <div class="row-flex" style="gap: 7px; flex-direction: column; justify-content: start;">
+                        <div class="row-amount" style="height: 115px; flex-direction: column;">
+                            <div class="row-menu">
+                                <span class="row-title">회원번호</span>
+                                <div class="row-content" style="gap: 3px;">
+                                    <input type="text" class="phoneNumber" id="memberInput1" maxlength="13" oninput="formatPhoneNumber(this); resetMemberSearch(1);">
+                                    <button style="width: fit-content;" onclick="getMember(1)">조회</button>
+                                </div>
+                            </div>
+                            <div class="row-menu">
+                                <div class="dip-row" style="width: 100%;" id="memberRecent1">
+                                    <span class="row-title"></span>
+                                    <div class="row-content" style="gap: 3px;">
+                                        <button class="flex1" onclick="searchRecentMember(1)">최근 조회</button>
+                                    </div>
+                                </div>
+                                <div class="dip-row" style="width: 100%; display: none;" id="memberPointScreen1">
+                                    <span class="row-title">보유포인트</span>
+                                    <div class="row-content" style="gap: 3px;" id="memberPoint1"></div>
+                                </div>
+                                <div class="dip-row justify-c" style="width: 100%; display: none;" id="memberNewScreen1">
+                                    <span class="align-c fcor-r" style="white-space: nowrap;">존재하지 않는 회원입니다</span>
+                                    <button style="width: fit-content;" onclick="saveMember(1)">신규저장</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="padding1" style="flex-direction: column; display: none; justify-content: space-between;" id="search_receipt">
+                    <div class="row-btw">
+                        <div class="rowContent" style="font-size: 130%; font-weight: bold;">영수증 조회</div>
+                        <div class="rowBtn">
+                            <button class="close" onclick="openMenu('menu')">X</button>
+                        </div>
+                    </div>
+                    <hr class="bord2">
+                    <div class="row-amount">
+                        <div class="row-menu">
+                            <span class="row-title">영수증번호</span>
+                            <div class="row-content" style="gap: 3px;">
+                                <input type="text" id="searchReceipt">
+                                <button style="width: fit-content;" onclick="searchReceipt()">조회</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-flex" style="gap: 7px; flex-direction: column; justify-content: start; overflow: hidden">
+                        <div class="listBox-100">
+                            <div class="scrollTableBox" id="scrollArea5">
+                                <table class="history">
+                                    <thead>
+                                        <tr>
+                                            <th class="wth30">판매일자</th>
+                                            <th class="wth35">영수증번호</th>
+                                            <th class="wth25">금액</th>
+                                            <th class="wth10">취소</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="fifthInsertPoint"></tbody>
+                                </table>
+                            </div>
+                            <div class="scrollBtnBox">
+                                <button class="scroll" id="scrollUp5" disabled>∧</button>
+                                <button class="scroll" id="scrollDown5" disabled>∨</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 목록 하단 -->
+            <div class="box-underList">
+                <div class="grid-underList">
+                    <button class="order mixedEvent separateListEvent" onclick="cancelOrder('allCancel')">전체 취소</button>
+                    <button class="order mixedEvent separateListEvent" onclick="cancelOrder('selectedCancel')">선택 취소</button>
+                    <button class="order mixedEvent separateListEvent" onclick="openDiscountModal('allDiscount')">전체 할인</button>
+                    <button class="order mixedEvent separateListEvent" onclick="openDiscountModal('selectedDiscount')">선택 할인</button>
+                    <button class="order mixedEvent separateListEvent" onclick="openOptionModal(this, 'selectedOption')">선택 옵션</button>
+                    <button class="order" onclick="openSoldOutModal()">품절 관리</button>
+                </div>
+                <div class="dip-row" id="separate_underList" style="display: none;">
+                    <div class="flex1" style="gap: 10px;">
+                        <button class="move separateBtn separateEvent" id="allUpBtn" onclick="clickMoveItem(1)" disabled>
+                            <img src="/icon/arrow_up2.png">
+                        </button>
+                        <button class="move separateBtn separateEvent" id="oneUpBtn" onclick="clickMoveItem(2)" disabled>
+                            <img src="/icon/arrow_up1.png">
+                        </button>
+                    </div>
+                    <div class="flex1" style="gap: 10px;">
+                        <button class="move separateBtn separateEvent" id="oneDownBtn" onclick="clickMoveItem(3)" disabled>
+                            <img src="/icon/arrow_down1.png">
+                        </button>
+                        <button class="move separateBtn separateEvent" id="allDownBtn" onclick="clickMoveItem(4)" disabled>
+                            <img src="/icon/arrow_down2.png">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-underList2" style="display: none;">
+                <div class="padding2" style="flex-direction: column;" id="fourthPage">
+                    <div class="listBox-80">
+                        <div class="scrollTableBox" id="scrollArea4">
+                            <table class="order">
+                                <thead>
+                                    <tr>
+                                        <th class="wth5"></th>
+                                        <th class="wth25">메뉴</th>
+                                        <th class="wth15">단가</th>
+                                        <th class="wth20">수량</th>
+                                        <th class="wth15">할인</th>
+                                        <th class="wth20">금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fourthInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp4" disabled>∧</button>
+                            <button class="scroll" id="scrollDown4" disabled>∨</button>
+                        </div>
+                    </div>
+                    <div class="row-btw">
+                        <table class="orderResult" style="height: 100%;">
+                            <tbody>
+                                <tr>
+                                    <td class="wth15">결제금액:</td>
+                                    <td class="wth25" style="font-weight: bold;" id="totalPayment4">0원</td>
+                                    <td class="wth5">┃</td>
+                                    <td class="wth20" id="totalCount4">0개</td>
+                                    <td class="wth15" id="totalDiscount4">0</td>
+                                    <td class="wth20" id="totalPrice4">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="rowBtn"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 계산금액 -->
+            <div class="box-sum" style="font-size: 20px;">
+                <div class="padding3" style="flex-direction: column;">
+                    <div class="sum-btw">
+                        <button class="waiting separateListEvent now" id="waiting1" onclick="changeWaiting(1)">1</button>
+                        <button class="waiting separateListEvent" style="border-left: 1px solid white; border-right: 1px solid white;" id="waiting2" onclick="changeWaiting(2)">2</button>
+                        <button class="waiting separateListEvent" id="waiting3" onclick="changeWaiting(3)">3</button>
+                    </div>
+                    <div class="sum-btw">
+                        <span>주문금액</span>
+                        <span id="sumPrice"></span>
+                    </div>
+                    <div class="sum-btw">
+                        <span>할인금액</span>
+                        <span class="fcor-o" id="sumDiscount"></span>
+                    </div>
+                    <div class="sum-btw">
+                        <span>받을금액</span>
+                        <span id="sumNonPayment"></span>
+                    </div>
+                    <div class="sum-btw">
+                        <span>받은금액</span>
+                        <span id="sumPayment"></span>
+                    </div>
+                    <div class="sum-btw">
+                        <span>거스름돈</span>
+                        <span class="fcor-o" id="sumChange"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- keyPad -->
+            <div class="box-calc">
+                <div class="padding2">
+                    <div class="grid-keyPad3">
+                        <div class="keypad3-inputBox">
+                            <input type="text" class="autoComma text-r" value="0" id="calculateDisplay" style="border-radius: 10px;">
+                        </div>
+                        <button class="keyPad" id="numBtn7">7</button>
+                        <button class="keyPad" id="numBtn8">8</button>
+                        <button class="keyPad" id="numBtn9">9</button>
+                        <button class="keyPad" id="numBtn4">4</button>
+                        <button class="keyPad" id="numBtn5">5</button>
+                        <button class="keyPad" id="numBtn6">6</button>
+                        <button class="keyPad" id="numBtn1">1</button>
+                        <button class="keyPad" id="numBtn2">2</button>
+                        <button class="keyPad" id="numBtn3">3</button>
+                        <button class="keyPad" id="numBtn0">0</button>
+                        <button class="keyPad" id="numBtn00">00</button>
+                        <button class="keyPad" id="numBtnC">C</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴 하단 -->
+            <div class="box-underMenu">
+                <div class="grid-underMenu" style="font-size: 140%;">
+                    <div class="box-underMenu1">
+                        <button class="menu separateListEvent" id="payment_cash_btn" onclick="openMenu('payment_cash')">현금<br/>결제</button>
+                    </div>
+                    <div class="box-underMenu2">
+                        <button class="menu separateListEvent" id="payment_card_btn" onclick="openMenu('payment_card')">카드<br/>결제</button>
+                    </div>
+                    <div class="box-underMenu3">
+                        <button class="menu mixedEvent" id="payment_separate_btn" onclick="openMenu('payment_separate')">개별<br/>결제</button>
+                    </div>
+                    <div class="box-underMenu4">
+                        <button class="menu separateListEvent" id="payment_mixed_btn" onclick="openMenu('payment_mixed')">복합<br/>결제</button>
+                    </div>
+                    <div class="box">
+                        <button class="menu mixedEvent separateListEvent" id="search_member_btn" onclick="openMenu('search_member')">회원 조회</button>
+                    </div>
+                    <div class="box">
+                        <button class="menu mixedEvent separateListEvent" id="search_receipt_btn" onclick="openMenu('search_receipt')">영수증 조회</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal">
+        <div id="modalItem" class="modal" style="display: none;">
+            <div class="modal-content-l orderModal" id="optionModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title"><span id="optionName"></span> - 옵션선택</div>
+                    <button class="square30 icon" onclick="closeOrderModal()">X</button>
+                </div>
+                <div class="modal-body" id="optionBody">
+                    <div style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px;">
+                        <div class="plusBox"
+                             th:each="optionSet:${optionList}"
+                             th:id="'option_' + ${optionSet.id}"
+                             th:data-multi="${optionSet.multi}"
+                        >
+                            <div class="plusTitle"
+                                 th:text="${optionSet.name}"
+                            ></div>
+                            <div class="plusContentBox">
+                                <button class="plusContent selected"
+                                        th:id="'option_' + ${optionSet.id} +'_default'"
+                                        onclick="clickModalContent(this, 'option')"
+                                >
+                                    <span>선택 안함</span>
+                                    <span class="fcor-r">(+0원)</span>
+                                </button>
+                                <button class="plusContent"
+                                        th:each="option : ${optionSet.optionList}"
+                                        th:id="'option_' + ${optionSet.id} + '_' + ${option.id}"
+                                        onclick="clickModalContent(this, 'option')"
+                                >
+                                    <span class="name"
+                                          th:text="${option.displayName}"></span>
+                                    <span class="price fcor-r"
+                                          th:text="${'(+' + #numbers.formatInteger(option.optionPrice, 3, 'COMMA') + '원)'}"
+                                    ></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-foot-l">
+                    <div class="plusAll" id="option_all_name"></div>
+                    <div class="plusPrice">
+                        <span>
+                            <span>결제금액</span>
+                            <span id="countSpan1"></span>
+                        </span>
+                        <span id="option_all_price" style="font-size: 25px"></span>
+                    </div>
+                    <button style="width: 100px;" onclick="saveOption()">확인</button>
+                </div>
+            </div>
+            <div class="modal-content-l orderModal" id="discountModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title"><span id="discountName"></span> - 할인선택</div>
+                    <button class="square30 icon" onclick="closeOrderModal()">X</button>
+                </div>
+                <div class="modal-body" id="discountBody">
+                    <div style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 10px;">
+                        <div class="plusBox"
+                             th:each="discountSet:${discountList}"
+                             th:id="'discount_' + ${discountSet.id}"
+                             th:data-multi="${discountSet.multi}"
+                        >
+                            <div class="plusTitle"
+                                 th:text="${discountSet.name}"
+                            ></div>
+                            <div class="plusContentBox">
+                                <button class="plusContent selected"
+                                        th:id="'discount_' + ${discountSet.id} +'_default'"
+                                        onclick="clickModalContent(this, 'discount')"
+                                >
+                                    <span>선택 안함</span>
+                                    <span class="fcor-r">(-0원)</span>
+                                </button>
+                                <button class="plusContent"
+                                        th:each="discount : ${discountSet.discountList}"
+                                        th:id="'discount_' + ${discountSet.id} +'_'+ ${discount.id}"
+                                        onclick="clickModalContent(this, 'discount')"
+                                >
+                                    <span class="name"
+                                          th:text="${discount.displayName}"></span>
+                                    <span class="price fcor-r"
+                                          th:if="${discount.typeValue == true}"
+                                          th:text="${'(-' + #numbers.formatInteger(discount.discountPrice, 3, 'COMMA') + '원)'}"
+                                    ></span>
+                                    <span class="price fcor-r"
+                                          th:unless="${discount.typeValue == true}"
+                                          th:text="'(-' + ${discount.discountPrice} + '%)'"
+                                    ></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-foot-l">
+                    <div class="plusAll" id="discount_all_name"></div>
+                    <div class="plusPrice">
+                        <span>
+                            <span>결제금액</span>
+                            <span id="countSpan2"></span>
+                        </span>
+                        <span id="discount_all_price" style="font-size: 25px"></span>
+                    </div>
+                    <button style="width: 100px;" onclick="saveDiscount()">확인</button>
+                </div>
+            </div>
+            <div class="modal-content-l orderModal" id="soldOutModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">품절 관리</div>
+                    <button class="square30 icon" onclick="closeOrderModal()">X</button>
+                </div>
+                <div class="modal-body" id="plusBox" style="overflow:hidden;">
+                    <div class="row-btw" style="padding-bottom: 15px;">
+                        <div class="row-flex">
+                            <div class="text-c">
+                                <input type="radio" name="itemType" id="allItem" value="0" onchange="selectRadio()" checked>
+                                <label for="allItem">전체보기</label>
+                            </div>
+                        </div>
+                        <div class="row-flex">
+                            <div class="text-c">
+                                <input type="radio" name="itemType" id="productItem" value="1" onchange="selectRadio()">
+                                <label for="allItem">상품보기</label>
+                            </div>
+                            <select class="rowContent" style="margin-left: 10px;" id="productSelect" onchange="changeSelect()" disabled>
+                                <option value="search0" selected>전체보기</option>
+                                <option th:each="productCategoryDTO : ${productCategoryList}"
+                                        th:value="search+${productCategoryDTO.id}"
+                                        th:text="${productCategoryDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="row-flex">
+                            <div class="text-c">
+                                <input type="radio" name="itemType" id="optionItem" value="2" onchange="selectRadio()">
+                                <label for="allItem">옵션보기</label>
+                            </div>
+                            <select class="rowContent" style="margin-left: 10px;" id="optionSelect" onchange="changeSelect()" disabled>
+                                <option value="search0" selected>전체보기</option>
+                                <option th:each="optionCategoryDTO : ${optionCategoryList}"
+                                        th:value="search+${optionCategoryDTO.id}"
+                                        th:text="${optionCategoryDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="row-flex">
+                            <div class="text-c">
+                                <input type="radio" name="itemType" id="stockItem" value="3" onchange="selectRadio()">
+                                <label for="allItem">재고보기</label>
+                            </div>
+                            <select class="rowContent" style="margin-left: 10px;" id="stockSelect" onchange="changeSelect()" disabled>
+                                <option value="search0" selected>전체보기</option>
+                                <option th:each="stockCategoryDTO : ${stockCategoryList}"
+                                        th:value="search+${stockCategoryDTO.id}"
+                                        th:text="${stockCategoryDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row-flex">
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">품절되지 않음</div>
+                            <div class="scrollBoxBar">
+                                <div class="row-wrap unplaced"></div>
+                            </div>
+                        </div>
+                        <div class="arrangementArrow">
+                            <button class="square30" id="toPlace" disabled>
+                                <img src="/icon/arrow_right.png">
+                            </button>
+                            <button class="square30" id="toNotPlace" disabled>
+                                <img src="/icon/arrow_left.png">
+                            </button>
+                        </div>
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">품절됨</div>
+                            <div class="scrollBoxBar">
+                                <div class="row-wrap placed"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-foot justify-r">
+                    <div class="row-fit">
+                        <button class="cud" style="width: 80px;" id="resetSoldOut_Btn" onclick="resetSoldOutPage()" disabled>되돌리기</button>
+                        <button class="cud" id="saveSoldOut_Btn" onclick="saveSoldOut()" disabled>저장</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-content-s paymentModal" id="memberPointModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">포인트 적립</div>
+                    <button class="square30 icon" onclick="closePaymentModal(1)">X</button>
+                </div>
+                <div class="modal-body" style="display: flex; justify-content: center; align-items: center;">
+                    포인트를 적립하시겠습니까?
+                </div>
+                <div class="modal-foot" style="display: flex; justify-content: space-between;">
+                    <button style="width: 100px;" onclick="closePaymentModal(1)">적립하지 않음</button>
+                    <button style="width: 100px;" onclick="openSavePointModal()">적립함</button>
+                </div>
+            </div>
+            <div class="modal-content-s paymentModal" id="savePointModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">포인트 적립</div>
+                    <button class="square30 icon" onclick="closePaymentModal(2)">X</button>
+                </div>
+                <div class="modal-body" style="gap: 15px;">
+                    <div class="row-btw">
+                        <div class="rowName70">회원번호</div>
+                        <div class="row-content" style="gap: 3px;">
+                            <input type="text" class="phoneNumber" maxlength="13" id="memberInput3" oninput="formatPhoneNumber(this); resetMemberSearch(3);">
+                            <button style="width: fit-content;" onclick="getMember(3)">조회</button>
+                        </div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="dip-row" id="memberRecent3">
+                            <span>회원정보 가져오기: </span>
+                            <button class="flex1" onclick="searchRecentMember(3)">최근 조회</button>
+                        </div>
+                        <div class="dip-row" style="display: none;" id="memberPointScreen3">
+                            <span>보유포인트: </span>
+                            <span id="memberPoint3"></span>
+                        </div>
+                        <div class="dip-row" style="display: none;" id="memberNewScreen3">
+                            <span class="align-c fcor-r" style="white-space: nowrap;">존재하지 않는 회원입니다</span>
+                            <button style="width: fit-content;" onclick="saveMember(3)">신규저장</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-foot justify-r">
+                    <button style="width: 100px;" onclick="saveMemberPoint()">적립</button>
+                </div>
+            </div>
+            <div class="modal-content-s paymentModal" id="cancelMethodModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">결제 취소</div>
+                    <button class="square30 icon" onclick="closeCancelMethodModal()">X</button>
+                </div>
+                <div class="modal-body" style="gap: 15px;">
+                    <div class="row-btw">
+                        <div class="rowName70">결제수단</div>
+                        <dic class="rowContent justify-l" style="gap: 3px;" id="cancelModalType"></dic>
+                    </div>
+                    <div class="row-btw">
+                        <div class="rowName70">취소금액</div>
+                        <dic class="rowContent justify-l" style="gap: 3px;" id="cancelModalPrice"></dic>
+                    </div>
+                </div>
+                <div class="modal-foot justify-r">
+                    <button style="width: 100px;" data-value="0" id="cancelMethodBtn" onclick="cancelMethod(this)">결제 취소</button>
+                </div>
+            </div>
+            <div class="modal-content-m receiptModal" id="receiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[영수증]</div>
+                    <button class="square30 icon" onclick="closeReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="receiptPrintArea">
+                    <div style="padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px dashed black;">
+                        <div>
+                            <span>[매장명]</span>
+                            <span th:text="${store.name}"></span>
+                        </div>
+                        <div>
+                            <span>[사업자]</span>
+                            <span th:text="${store.ownerDTO.regNumber}"></span>
+                        </div>
+                        <div>
+                            <span>[주 &nbsp; 소]</span>
+                            <span th:text="${store.location}"></span>
+                        </div>
+                        <div class="row-btw">
+                            <div>
+                                <span>[대표자]</span>
+                                <span th:text="${store.ownerDTO.name}"></span>
+                            </div>
+                            <div>
+                                <span>[TEL]</span>
+                                <span th:text="${store.telNumber}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <span>[매출일]</span>
+                            <span id="orderModDate"></span>
+                        </div>
+                        <div>
+                            <span>[영수증]</span>
+                            <span id="orderReceiptNumber"></span>
+                        </div>
+                    </div>
+                    <table class="receipt">
+                        <thead>
+                            <tr>
+                                <td class="wth50">품목</td>
+                                <td class="wth15">단가</td>
+                                <td class="wth10">수량</td>
+                                <td class="wth25">금액</td>
+                            </tr>
+                        </thead>
+                        <tbody id="receiptBodyPoint">
+                            <tr>
+                                <td class="tdLeft">아메리카노</td>
+                                <td>2,800</td>
+                                <td>2</td>
+                                <td>4,600</td>
+                            </tr>
+                            <tr>
+                                <td class="tdLeft">(+ICE)</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="dashed" style="text-align: center;" colspan="3">주문금액</td>
+                                <td class="dashed" id="receiptPrice"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" colspan="3">할인금액</td>
+                                <td id="receiptDiscount"></td>
+                            </tr>
+                            <tr>
+                                <td class="dashed" style="text-align: center;" colspan="3">합계금액</td>
+                                <td class="dashed" id="receiptPayment"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" colspan="3">받은금액</td>
+                                <td id="receiptReceived"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;" colspan="3">거스름돈</td>
+                                <td id="receiptChange"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-foot">
+                    <button onclick="window.print()">출력</button>
+                    <button onclick="openCashReceiptModal()">현금영수증</button>
+                    <button onclick="openCardReceiptModal()">카드영수증</button>
+                    <button class="receiptStatus" onclick="openCancelReceiptModal()">결제취소</button>
+                </div>
+            </div>
+            <div class="modal-content-m receiptModal" id="cashReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[현금영수증]</div>
+                    <button class="square30 icon" onclick="openReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="cashReceiptPoint"></div>
+                <div class="modal-foot-l" style="display:flex; flex-direction:column;">
+                    <span class="flex1" style="gap: 1%; padding-bottom: 1%; box-sizing: border-box;">
+                        <button id="showIssueCashList" onclick="openCashReceiptModal()">발행영수증 목록</button>
+                        <button id="showNonIssueCashList" onclick="openNonCashReceipt()">발행가능 목록</button>
+                    </span>
+                    <span class="flex1" style="gap: 1%; box-sizing: border-box;">
+                        <button id="printCashReceipt" onclick="printCashReceipt()">출력</button>
+                        <button class="receiptStatus" id="cancelCashReceipt" onclick="cancelCashReceipt()">현금영수증 취소</button>
+                        <button class="receiptStatus" id="saveCashReceipt" onclick="openSaveCashReceipt()">현금영수증 발행</button>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-content-m receiptModal" id="cardReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[카드영수증]</div>
+                    <button class="square30 icon" onclick="openReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="cardReceiptPoint"></div>
+                <div class="modal-foot">
+                    <button id="printCardReceipt" onclick="printCardReceipt()">출력</button>
+                </div>
+            </div>
+            <div class="modal-content-m receiptModal" id="saveCashReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">[현금영수증]</div>
+                    <button class="square30 icon" onclick="openReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" id="newCashReceiptPoint"></div>
+                <div class="modal-foot">
+                    <button onclick="saveNewCashReceipt()">현금영수증 발행</button>
+                </div>
+            </div>
+            <div class="modal-content-s receiptModal" id="cancelReceiptModal" style="display: none;">
+                <div class="modal-header">
+                    <div class="modal-title">결제 취소</div>
+                    <button class="square30 icon" onclick="closeCancelReceiptModal()">X</button>
+                </div>
+                <div class="modal-body" style="gap: 15px;">
+                    <div class="row-center"> 결제를 취소하시겠습니까? </div>
+                    <div class="row-center">
+                        <span>취소금액: </span>
+                        <span id="cancelReceiptPrice"></span>
+                    </div>
+                </div>
+                <div class="modal-foot justify-r">
+                    <button class="receiptStatus" style="width: 100px;" onclick="cancelReceipt()">확인</button>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="script">
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+        <script src="/js/soldout.js"></script>
+        <script src="/js/menu/receipt.js"></script>
+        <script src="/js/menu/menu.js"></script>
+        <script src="/js/menu/order.js"></script>
+        <script src="/js/menu/payment.js"></script>
+        <script src="/js/menu/member.js"></script>
+        <script src="/js/modal/orderManagement.js"></script>
+        <script src="/js/modal/orderPayment.js"></script>
+        <script src="/js/modal/receipt.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/number.js"></script>
+    </span>
+
+</th:block>
+</html>

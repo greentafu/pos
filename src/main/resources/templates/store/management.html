@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>가게관리-매장정보</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 왼쪽 화면 -->
+            <div class="box-leftPage cor-w">
+                <div class="padding2" style="flex-direction: column;">
+                    <div class="rows-box scrollBox" style="white-space: nowrap;">
+                        <div class="row-btw">
+                            <div class="rowName90">사업자번호</div>
+                            <div class="rowContent justify-l" th:text="${owner.regNumber}"></div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">사업자명</div>
+                            <div class="rowContent justify-l" th:text="${owner.name}"></div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">매장이름</div>
+                            <div class="rowContent">
+                                <input type="text" id="storeName">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">매장주소</div>
+                            <div class="rowContent">
+                                <input type="text" id="storeLocation">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">매장전화번호</div>
+                            <div class="rowContent">
+                                <input type="text"
+                                       class="phoneNumber"
+                                       maxlength="13"
+                                       oninput="formatPhoneNumber(this)"
+                                       id="storeTel"
+                                >
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">적립률</div>
+                            <div class="rowContent">
+                                <input type="text" oninput="formatAutoComma(this)" value="0" id="pointPercent" style="margin-right: 5px;">
+                                <span>%</span>
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">운영상태</div>
+                            <div class="rowContent justify-l">
+                                <input type="checkbox" class="switch" id="openClose">
+                                <label for="openClose" class="switch">
+                                    <span class="on">개점</span>
+                                    <span class="off">폐점</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" id="crudD_Btn" onclick="deleteStore()">삭제</button>
+                        <button class="cud" id="crudCU_Btn" onclick="saveStore()">수정</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-rightPage cor-w">
+                <div class="padding2" style="flex-direction: column;">
+                    <div class="rows-box scrollBox" style="white-space: nowrap;">
+                        <div class="row-center icon" style="margin-bottom: 10px;">영업시간</div>
+                        <div class="row-flex">
+                            <table class="basic" style="height: 100%; text-align: center;">
+                                <thead>
+                                    <tr>
+                                        <th class="wth15">요일</th>
+                                        <th class="wth30">영업 시작 시간</th>
+                                        <th class="wth30">영업 마감 시간</th>
+                                        <th class="wth25">휴무</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="inputTimes">
+                                        <td>월요일</td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time startHour" value="00" id="StartHour1">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time startMin" value="00" id="StartMin1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time endHour" value="00" id="EndHour1">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time endMin" value="00" id="EndMin1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-center">
+                                                <input type="checkbox" class="switch" id="switch1">
+                                                <label for="switch1" class="switch">
+                                                    <span class="on">영업</span>
+                                                    <span class="off">휴무</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="inputTimes">
+                                        <td>화요일</td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time startHour" value="00" id="StartHour2">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time startMin"  value="00" id="StartMin2">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time endHour" value="00" id="EndHour2">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time endMin" value="00" id="EndMin2">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-center">
+                                                <input type="checkbox" class="switch" id="switch2">
+                                                <label for="switch2" class="switch">
+                                                    <span class="on">영업</span>
+                                                    <span class="off">휴무</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="inputTimes">
+                                        <td>수요일</td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time startHour" value="00" id="StartHour3">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time startMin" value="00" id="StartMin3">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time endHour" value="00" id="EndHour3">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time endMin" value="00" id="EndMin3">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-center">
+                                                <input type="checkbox" class="switch" id="switch3">
+                                                <label for="switch3" class="switch">
+                                                    <span class="on">영업</span>
+                                                    <span class="off">휴무</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="inputTimes">
+                                        <td>목요일</td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time startHour" value="00" id="StartHour4">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time startMin" value="00" id="StartMin4">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time endHour" value="00" id="EndHour4">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time endMin" value="00" id="EndMin4">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-center">
+                                                <input type="checkbox" class="switch" id="switch4">
+                                                <label for="switch4" class="switch">
+                                                    <span class="on">영업</span>
+                                                    <span class="off">휴무</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="inputTimes">
+                                        <td>금요일</td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time startHour" value="00" id="StartHour5">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time startMin" value="00" id="StartMin5">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time endHour" value="00" id="EndHour5">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time endMin" value="00" id="EndMin5">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-center">
+                                                <input type="checkbox" class="switch" id="switch5">
+                                                <label for="switch5" class="switch">
+                                                    <span class="on">영업</span>
+                                                    <span class="off">휴무</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="inputTimes">
+                                        <td>토요일</td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time startHour" value="00" id="StartHour6">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time startMin" value="00" id="StartMin6">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time endHour" value="00" id="EndHour6">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time endMin" value="00" id="EndMin6">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-center">
+                                                <input type="checkbox" class="switch" id="switch6">
+                                                <label for="switch6" class="switch">
+                                                    <span class="on">영업</span>
+                                                    <span class="off">휴무</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="inputTimes">
+                                        <td>일요일</td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time startHour" value="00" id="StartHour7">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time startMin" value="00" id="StartMin7">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-btw">
+                                                <input type="number" class="time endHour" value="00" id="EndHour7">
+                                                <span style="font-size: 150%;">:</span>
+                                                <input type="number" class="time endMin" value="00" id="EndMin7">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="row-center">
+                                                <input type="checkbox" class="switch" id="switch7">
+                                                <label for="switch7" class="switch">
+                                                    <span class="on">영업</span>
+                                                    <span class="off">휴무</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <div></div>
+                        <button class="cud" onclick="saveStoreTime()">수정</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu selected">매장 정보 관리</button>
+                <button class="menu" onclick="location.href='/store/machines'">기기 관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/inputTime.js"></script>
+        <script src="/js/number.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                getPage();
+            });
+
+            function getPage(){
+                $.ajax({
+                    url:'/api/getStorePage',
+                    method:'GET',
+                    success:function(data){
+                        const storeDTO = data.storeDTO;
+                        document.getElementById('storeName').value = storeDTO.name;
+                        document.getElementById('storeLocation').value = storeDTO.location;
+                        document.getElementById('storeTel').value = storeDTO.telNumber;
+                        document.getElementById('pointPercent').value = (storeDTO.pointPercent+'').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        document.getElementById('openClose').checked = storeDTO.status;
+
+                        const timeList = data.timeDTOList;
+                        timeList.forEach(storeTime => {
+                            const id = storeTime.dayOfWeekId;
+                            const startTime = storeTime.startTime;
+                            const endTime = storeTime.endTime;
+
+                            document.getElementById('StartHour'+id).value = startTime.split(':')[0];
+                            document.getElementById('StartMin'+id).value = startTime.split(':')[1];
+                            document.getElementById('EndHour'+id).value = endTime.split(':')[0];
+                            document.getElementById('EndMin'+id).value = endTime.split(':')[1];
+                            document.getElementById('switch'+id).checked=storeTime.statusValue;
+                        });
+                    }
+                });
+            }
+
+            function saveStore(){
+                const name = document.getElementById('storeName').value;
+                const location = document.getElementById('storeLocation').value;
+                const tel = document.getElementById('storeTel').value;
+                const percent = document.getElementById('pointPercent').value;
+                const oc = document.getElementById('openClose').checked;
+
+                $.ajax({
+                    url:'/api/updateStore',
+                    method:'PUT',
+                    contentType: "application/json",
+                    data: JSON.stringify({name:name, location:location, telNumber:tel, pointPercent:percent, status:oc}),
+                    success:function(data){
+                        getPage();
+                        alert('수정하였습니다.');
+                    },
+                    error: function(xhr) {
+                        let response = JSON.parse(xhr.responseText);
+                        if (response.errors) {
+                            alert(response.errors.join("\n"));
+                        } else {
+                            alert("알 수 없는 에러가 발생했습니다.");
+                        }
+                    }
+                });
+            }
+
+            function saveStoreTime(){
+                const timeList = [];
+                for(let i=1; i<=7; i++){
+                    const startTime = document.getElementById('StartHour'+i).value
+                                        + ":" + document.getElementById('StartMin'+i).value;
+                    const endTime = document.getElementById('EndHour'+i).value
+                                        + ":" + document.getElementById('EndMin'+i).value;
+                    const statusValue = document.getElementById('switch'+i).checked;
+                    timeList.push({startTime:startTime, endTime:endTime, statusValue:statusValue});
+                }
+                $.ajax({
+                    url:'/api/modifyStoreTime',
+                    method:'PUT',
+                    contentType: "application/json",
+                    data: JSON.stringify(timeList),
+                    success:function(data){
+                        getPage();
+                    },
+                    error: function(xhr) {
+                        let response = JSON.parse(xhr.responseText);
+                        if (response.errors) {
+                            alert(response.errors.join("\n"));
+                        } else {
+                            alert("알 수 없는 에러가 발생했습니다.");
+                        }
+                    }
+                });
+            }
+
+            function deleteStore(){
+                $.ajax({
+                    url:'/api/deleteStore',
+                    method:'DELETE'
+                });
+            }
+        </script>
+    </span>
+
+</th:block>
+</html>

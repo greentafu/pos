@@ -1,0 +1,279 @@
+.box-list {
+    border-radius: 10px;
+    grid-column: 1 / span 6;
+    grid-row: 1 / span 7;
+    display: flex;
+    background-color: white;
+}
+.box-underList {
+    grid-column: 1 / span 6;
+    grid-row: 8 / span 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.box-underList2 {
+    border-radius: 10px;
+    grid-column: 1 / span 6;
+    grid-row: 9 / span 4;
+    display: flex;
+    background-color: white;
+}
+.box-sum {
+    border-radius: 10px;
+    grid-column: 1 / span 3;
+    grid-row: 9 / span 4;
+    display: flex;
+    flex-direction: column;
+    background-color: #787878;
+    color: white;
+    white-space: nowrap;
+}
+.box-calc {
+    border-radius: 10px;
+    grid-column: 4 / span 3;
+    grid-row: 9 / span 4;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+.box-menu {
+    border-radius: 10px;
+    grid-column: 7 / span 6;
+    grid-row: 1 / span 10;
+    display: flex;
+    background-color: white;
+}
+.box-underMenu {
+    grid-column: 7 / span 6;
+    grid-row: 11 / span 2;
+    display: flex;
+}
+
+
+.grid-underList {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px 10px;
+    width: 100%;
+    height: 100%;
+}
+.grid-nextCalc {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 10px 10px;
+    width: 100%;
+    height: 100%;
+}
+.grid-underMenu {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px 10px;
+    width: 100%;
+    height: 100%;
+}
+.box-underMenu1 {
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 2;
+    display: flex;
+}
+.box-underMenu2 {
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 2;
+    display: flex;
+}
+.box-underMenu3 {
+    grid-column: 3 / span 1;
+    grid-row: 1 / span 2;
+    display: flex;
+}
+.box-underMenu4 {
+    grid-column: 4 / span 1;
+    grid-row: 1 / span 2;
+    display: flex;
+}
+
+table.order {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-left: 3px solid #EBEBEB;
+    border-right: 3px solid #EBEBEB;
+    border-bottom: 3px solid #EBEBEB;
+}
+table.order thead th {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+    border-top: 3px solid #EBEBEB;
+    border-bottom: 3px solid #EBEBEB;
+}
+table.order tbody tr {
+    max-height: 35px;
+    text-align: center;
+    box-sizing: border-box;
+}
+table.order tbody td {
+    max-height: 35px;
+    text-align: center;
+    box-sizing: border-box;
+}
+table.order tbody td.product {
+    border-top: 3px solid #EBEBEB;
+    box-sizing: border-box;
+}
+table.order tr:nth-child(1) td {
+    border-top: none;
+}
+
+table.orderResult {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 3px solid #EBEBEB;
+    background-color: #EBEBEB;
+    text-align: center;
+}
+
+.plusBox {
+    height: fit-content;
+    min-height: 100px;
+    display: flex;
+    flex-direction: row;
+    border: 3px solid #787878;
+    border-radius: 10px;
+}
+.plusTitle {
+    height: 100%;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #787878;
+    color: white;
+    font-size: 110%;
+    font-weight: bold;
+}
+.plusContentBox {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-content: start;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.plusAll {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    white-space: nowrap;
+    overflow-y: scroll;
+    font-size: 25px;
+}
+.plusAll::-webkit-scrollbar {
+    width: 10px;  
+}
+.plusAll::-webkit-scrollbar-thumb {
+    background: #C0C0C0;
+    border-radius: 10px;
+}
+.plusAll::-webkit-scrollbar-track {
+    background: #EBEBEB;
+}
+.plusPrice{
+    height: 100%;
+    min-width: 150px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.row-amount {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding-top: 10px; 
+    padding-bottom: 10px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    box-sizing: border-box;    
+}
+.row-menu {
+    height: 45px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    text-align: start;
+    font-size: 130%;
+    white-space: nowrap;
+}
+
+.row-title {
+    height: 100%;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-left: 60px;
+}
+.row-content {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    margin-right: 60px;
+}
+
+button.payment {
+    height: 50px;
+    width: 180px;
+    font-size: 120%;
+}
+
+button.order {
+    overflow: hidden;
+    box-sizing: border-box;
+    font-size: clamp(12px, 1.5vw, 110%);
+}
+button.waiting {
+    border-radius: 0px;
+    background-color: initial;
+    color: white;
+}
+button.now {
+    font-weight: bold;
+    color: #FCA400;
+}
+
+.sum-btw {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1%;
+    overflow: hidden;
+    padding: 1px 1px;
+    box-sizing: border-box;
+}

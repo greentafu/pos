@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>가게목록</title>
+        <link href="/styles/home.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-home">
+            <div th:each="store : ${storeList}" class="box">
+                <button class="home" th:onclick="|location.href='@{/home/selectStore(store=${store.id})}'|">
+                    <h2 th:text="${store.name}"></h2>
+                </button>
+            </div>
+            <div th:if="${type}" class="box">
+                <button class="home" style="font-size: 400%; font-weight: bold;" th:onclick="|location.href='@{/store/new-store}'|">＋</button>
+            </div>
+            <div class="box">
+                <button class="home" onclick="location.href='/logout'">
+                    <img src="/icon/log_out.png">
+                    <h2>로그아웃</h2>
+                </button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script>
+            document.getElementById('posHome').style.display = 'none';
+            document.getElementById('posNumberText').style.display = 'none';
+        </script>
+    </span>
+
+</th:block>
+</html>

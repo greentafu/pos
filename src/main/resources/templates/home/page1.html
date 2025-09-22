@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>Home</title>
+        <link href="/styles/home.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-home">
+            <span id="pageName" data-name="page1" style="display: none;"></span>
+            <div class="box cor-lg" data-index='0'></div>
+            <div class="box cor-lg" data-index='1'></div>
+            <div class="box-big">
+                <div class="padding3" style="flex-direction: column; justify-content: space-between;">
+                    <table class="home">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>건</th>
+                                <th>원</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-l">현금</td>
+                                <td colspan="2" th:text="${cash}"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-l">카드</td>
+                                <td colspan="2" th:text="${card}"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-l">포인트</td>
+                                <td colspan="2" th:text="${point}"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-l">총액</td>
+                                <td th:text="${paymentCount}"></td>
+                                <td th:text="${total}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="dip-row" style="height: 60px; width: 100%;">
+                        <button class="openClose" id="storeOpen" onclick="location.href='/store/open'" th:disabled="${recordStatus}">영업개시</button>
+                        <button class="openClose" id="storeClose" onclick="location.href='/store/close'" th:disabled="${!recordStatus}">영업마감</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box cor-lg" data-index='2'></div>
+            <div class="box cor-lg" data-index='3'></div>
+            <div class="box cor-lg" data-index='4'></div>
+            <div class="box cor-lg" data-index='5'></div>
+            <div class="box">
+                <button class="home" onclick="location.href='/home/page2'">
+                    <img src="/icon/setting.png">
+                    <h2>기타관리</h2>
+                </button>
+            </div>
+            <div class="box">
+                <button class="home" onclick="location.href='/logout'" th:disabled="${recordStatus}">
+                    <img src="/icon/log_out.png">
+                    <h2>로그아웃</h2>
+                </button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/screenButton.js"></script>
+    </span>
+
+</th:block>
+</html>

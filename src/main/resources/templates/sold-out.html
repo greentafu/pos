@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>품절관리</title>
+        <link href="/styles/category.css" rel="stylesheet">
+        <link href="/styles/soldout.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-quarter">
+            <!-- 왼쪽 화면 -->
+            <div class="box-quarter-left">
+                <div class="padding2" style="flex-direction: column;">
+                    <div class="row-flex">
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">품절되지 않음</div>
+                            <div class="scrollBoxBar">
+                                <div class="row-wrap unplaced"></div>
+                            </div>
+                        </div>
+                        <div class="arrangementArrow">
+                            <button class="square30" id="toPlace" disabled>
+                                <img src="/icon/arrow_right.png">
+                            </button>
+                            <button class="square30" id="toNotPlace" disabled>
+                                <img src="/icon/arrow_left.png">
+                            </button>
+                        </div>
+                        <div class="arrangementBox">
+                            <div class="arrangementTitle">품절됨</div>
+                            <div class="scrollBoxBar">
+                                <div class="row-wrap placed"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" style="width: 80px;" id="resetSoldOut_Btn" onclick="resetSoldOutPage()" disabled>되돌리기</button>
+                        <button class="cud" id="saveSoldOut_Btn" onclick="saveSoldOut()" disabled>저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-quarter-right-top">
+                <div class="padding3" style="flex-direction: column;">
+                    <div class="row-flex">
+                        <div class="text-c">
+                            <input type="radio" name="itemType" id="allItem" value="0" onchange="selectRadio()" checked>
+                            <label for="allItem">전체보기</label>
+                        </div>
+                    </div>
+                    <div class="row-flex">
+                        <div class="text-c">
+                            <input type="radio" name="itemType" id="productItem" value="1" onchange="selectRadio()">
+                            <label for="allItem">상품보기</label>
+                        </div>
+                        <select class="rowContent" style="margin-left: 10px;" id="productSelect" onchange="changeSelect()" disabled>
+                            <option value="search0" selected>전체보기</option>
+                            <option th:each="productCategoryDTO : ${productCategoryList}"
+                                    th:value="search+${productCategoryDTO.id}"
+                                    th:text="${productCategoryDTO.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="row-flex">
+                        <div class="text-c">
+                            <input type="radio" name="itemType" id="optionItem" value="2" onchange="selectRadio()">
+                            <label for="allItem">옵션보기</label>
+                        </div>
+                        <select class="rowContent" style="margin-left: 10px;" id="optionSelect" onchange="changeSelect()" disabled>
+                            <option value="search0" selected>전체보기</option>
+                            <option th:each="optionCategoryDTO : ${optionCategoryList}"
+                                    th:value="search+${optionCategoryDTO.id}"
+                                    th:text="${optionCategoryDTO.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="row-flex">
+                        <div class="text-c">
+                            <input type="radio" name="itemType" id="stockItem" value="3" onchange="selectRadio()">
+                            <label for="allItem">재고보기</label>
+                        </div>
+                        <select class="rowContent" style="margin-left: 10px;" id="stockSelect" onchange="changeSelect()" disabled>
+                            <option value="search0" selected>전체보기</option>
+                            <option th:each="stockCategoryDTO : ${stockCategoryList}"
+                                    th:value="search+${stockCategoryDTO.id}"
+                                    th:text="${stockCategoryDTO.name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="box-quarter-right-bottom">
+                <div class="padding3" style="flex-direction: column;">
+                    <div class="row-start" id="selectName"></div>
+                    <div class="row-flex" style="overflow-y: hidden;">
+                        <div class="scrollBoxBar" style="height: 100%; width: 100%;">
+                            <table class="basic">
+                                <thead>
+                                    <tr>
+                                        <th>자재명</th>
+                                        <th>용량</th>
+                                        <th>재고량</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="receiptPoint"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+        <script src="/js/soldout.js"></script>
+    </span>
+
+</th:block>
+</html>

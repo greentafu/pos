@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>직원관리-직원</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <!-- 목록 -->
+            <div class="box-leftPage cor-w">
+                <div class="padding2" style="flex-direction: column;" id="defaultPage">
+                    <span id="pageName" data-name="Employee" style="display: none;"></span>
+                    <div class="row-btw">
+                        <div class="rowName90">직원명 :</div>
+                        <div class="rowContent">
+                            <input type="text" id="searchInput">
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="rowName90">직급 :</div>
+                        <div class="rowContent">
+                            <select class="custom-m" id="searchSelect">
+                                <option value="search0" selected>전체보기</option>
+                                <option th:each="jobTitleDTO : ${jobTitleList}"
+                                        th:value="search+${jobTitleDTO.id}"
+                                        th:text="${jobTitleDTO.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-80">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="management selectTable">
+                                <thead>
+                                    <tr>
+                                        <th class="wth10">직원번호</th>
+                                        <th class="wth20">이름</th>
+                                        <th class="wth20">직급</th>
+                                        <th class="wth30">등록일</th>
+                                        <th class="wth30">핸드폰번호</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 오른쪽 화면 -->
+            <div class="box-rightPage cor-w">
+                <div class="padding2" style="flex-direction: column; justify-content: space-between;">
+                    <span id="idNumber" data-number="0" style="display: none;"></span>
+                    <div class="rows-box scrollBox">
+                        <div class="row-btw">
+                            <div class="rowName90">이름</div>
+                            <div class="rowContent">
+                                <input type="text" id="name">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">직급</div>
+                            <div class="rowContent">
+                                <select class="custom-m" id="jobTitle">
+                                    <option th:each="jobTitleDTO : ${jobTitleList}"
+                                            th:value="${jobTitleDTO.id}"
+                                            th:text="${jobTitleDTO.name}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">아이디</div>
+                            <div class="rowContent">
+                                <span class="wth100" id="userId"></span>
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">비밀번호</div>
+                            <div class="rowContent">
+                                <input type="text" id="userPw">
+                            </div>
+                        </div>
+                        <div class="row-btw">
+                            <div class="rowName90">핸드폰번호</div>
+                            <div class="rowContent">
+                                <input type="text"
+                                       class="phoneNumber"
+                                       id="telNumber"
+                                       maxlength="13"
+                                       oninput="formatPhoneNumber(this)"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fit">
+                        <button class="cud" id="crudD_Btn" onclick="deleteCrud()" disabled>삭제</button>
+                        <button class="cud" id="crudCU_Btn" onclick="saveCrud()">저장</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu selected">직원 관리</button>
+                <button class="menu" onclick="location.href='/employee/position'">직급 관리</button>
+                <button class="menu" onclick="location.href='/employee/wage'">시급 관리</button>
+                <button class="menu" onclick="location.href='/employee/payment'">급여 관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script type="module" src="/js/management_action.js"></script>
+        <script src="/js/management.js"></script>
+        <script src="/js/number.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                makeEmployeeId();
+            });
+        </script>
+    </span>
+
+</th:block>
+</html>

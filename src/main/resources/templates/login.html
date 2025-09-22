@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+    
+    <span id="head">
+        <title>로그인</title>
+        <link href="/styles/home.css" rel="stylesheet">
+    </span>
+    
+    <span id="content">
+        <div class="flex1" style="height:90%;">
+            <div style="height: 230px; width: 400px; background-color: white; border-radius: 10px;">
+                <div class="padding3" style="flex-direction: column; font-size: 30px; gap: 20px;">
+                    <div class="row-flex" >
+                        <div class="rowName90 justify-c">ID</div>
+                        <div class="rowContent">
+                            <input type="text" class="login" id="id">
+                        </div>
+                    </div>
+                    <div class="row-flex">
+                        <div class="rowName90 justify-c">PW</div>
+                        <div class="rowContent">
+                            <input type="password" class="login" id="pw">
+                        </div>
+                    </div>
+                    <div class="row-flex justify-c">
+                        <button style="width: 200px; border-radius: 15px;" onclick="login()">로그인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script>
+            document.getElementById('posHome').style.display = 'none';
+            document.getElementById('posNumberText').style.display = 'none';
+
+            function login(){
+                const id = document.getElementById('id').value;
+                const pw = document.getElementById('pw').value;
+
+                $.ajax({
+                    url:'/api/login',
+                    method:'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify({userId:id, userPw:pw}),
+                    success:function(data){
+                        window.location.href = "/store/affiliation";
+                    },
+                    error: function(xhr) {
+                        let response = JSON.parse(xhr.responseText);
+                        if (response.errors) {
+                            alert(response.errors.join("\n"));
+                        } else {
+                            alert("알 수 없는 에러가 발생했습니다.");
+                        }
+                    }
+                });
+            }
+        </script>
+    </span>
+        
+</th:block>
+</html>

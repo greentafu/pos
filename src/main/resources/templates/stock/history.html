@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<th:block th:replace="~{layout::all(~{this::#head} ,~{this::#content}, ~{this::#modal} ,~{this::#script})}">
+
+    <span id="head">
+        <title>재고관리-내역</title>
+        <link href="/styles/searchBlock.css" rel="stylesheet">
+    </span>
+
+    <span id="content">
+        <div class="grid-basic">
+            <div class="box-wholePage">
+                <div class="padding1" style="flex-direction: column;" id="defaultPage">
+                    <div class="row-btw">
+                        <div class="flex2 dip-row justify-l">
+                            <div class="rowName70">조회기간 :</div>
+                            <input type="date" id="startDate">
+                            <span>~</span>
+                            <input type="date" id="endDate">
+                            <input type="radio" class="custom-radio" name="dateRadio" id="todayRadio" checked>
+                            <label for="todayRadio">오늘</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="weekRadio">
+                            <label for="weekRadio">금주</label>
+                            <input type="radio" class="custom-radio" name="dateRadio" id="monthRadio">
+                            <label for="monthRadio">당월</label>
+                        </div>
+                        <div class="flex1 dip-row justify-l"></div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="row-btw">
+                        <div class="flex1 dip-row justify-l">
+                            <div class="rowName70">카테고리 :</div>
+                            <select class="custom-m" id="searchSelect">
+                                <option value="0" selected>전체보기</option>
+                                <option th:each="stockCategoryDTO : ${stockCategoryList}"
+                                        th:value="${stockCategoryDTO.id}"
+                                        th:text="${stockCategoryDTO.name}">
+                                </option>
+                            </select>
+                            <div class="rowName70" style="margin-left: 20px;">유형 :</div>
+                            <select class="custom-m" id="inoutType">
+                                <option value="999">전체</option>
+                                <optgroup label="입고">
+                                    <option value="0">구매입고</option>
+                                    <option value="1">반품입고</option>
+                                    <option value="2">이동입고</option>
+                                    <option value="3">기타입고</option>
+                                </optgroup>
+                                <optgroup label="출고">
+                                    <option value="4">판매출고</option>
+                                    <option value="5">폐기출고</option>
+                                    <option value="6">이동출고</option>
+                                    <option value="7">기타출고</option>
+                                </optgroup>
+                                <optgroup label="조정">
+                                    <option value="8">실사조정</option>
+                                    <option value="9">초기조정</option>
+                                    <option value="10">오류수정</option>
+                                    <option value="11">기타조정</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="flex1 dip-row justify-r">
+                            <div class="dip-row" style="min-width: 150px;">
+                                <span class="rowName70">조회상품 :</span>
+                                <input type="text" id="searchName">
+                            </div>
+                            <div style="min-width: 80px;">
+                                <button class="search" onclick="search()">조회</button>
+                            </div>
+                        </div>
+                        <div class="rowBtn"></div>
+                    </div>
+                    <div class="listBox-80">
+                        <div class="scrollTableBox" id="scrollArea">
+                            <table class="history">
+                                <thead>
+                                    <tr>
+                                        <th class="wth20">변동일자</th>
+                                        <th class="wth15">재고번호</th>
+                                        <th class="wth15">재고명</th>
+                                        <th class="wth10">유형</th>
+                                        <th class="wth10">변동수량</th>
+                                        <th class="wth10">현재수량</th>
+                                        <th class="wth5">단가</th>
+                                        <th class="wth15">비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="defaultInsertPoint"></tbody>
+                            </table>
+                        </div>
+                        <div class="scrollBtnBox">
+                            <button class="scroll" id="scrollUp" disabled>∧</button>
+                            <button class="scroll" id="scrollDown" disabled>∨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 메뉴버튼 -->
+            <div class="box-menu-btn">
+                <button class="menu" onclick="location.href='/stock/category-settings'">재고<br/>카테고리<br/>관리</button>
+                <button class="menu" onclick="location.href='/stock/management'">재고 품목<br/>관리</button>
+                <button class="menu" onclick="location.href='/stock/count'">재고 수량<br/>관리</button>
+                <button class="menu selected">재고 내역<br/>관리</button>
+            </div>
+        </div>
+    </span>
+
+    <span id="modal"></span>
+
+    <span id="script">
+        <script src="/js/inputTime.js"></script>
+        <script src="/js/scroll.js"></script>
+        <script src="/js/number.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                scrollStep = scrollArea.clientHeight-60;
+                size = Math.floor((scrollArea.offsetHeight-35)/30)*2;
+
+                getPage();
+                clickRow();
+                showScrollArea();
+            });
+
+            function getPage(){
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const searchCategory = document.getElementById('searchSelect').value;
+                const inoutType = document.getElementById('inoutType').value;
+                const searchText = document.getElementById('searchName').value;
+
+                $.ajax({
+                    url:'/api/stockHistoryPage',
+                    method:'GET',
+                    data: {page:page, size:size, startDate:startDate, endDate:endDate, searchCategory:searchCategory,
+                           searchType:inoutType, searchText:searchText},
+                    success:function(data){
+                        totalPages=data.page.totalPages;
+                        if(totalPages<page) finPage=true;
+
+                        const contents = data.content;
+
+                        let colorFlag = true;
+                        contents?.forEach(content => {
+                            const newTr = document.createElement('tr');
+                            if(colorFlag) newTr.className = 'cor-wg';
+                            colorFlag = !colorFlag;
+
+                            let typeName = '';
+                            const typeMap = { 0: '구매입고', 1: '반품입고', 2: '이동입고', 3: '기타입고',
+                                              4: '판매출고', 5: '폐기출고', 6: '이동출고', 7: '기타출고',
+                                              8: '실사조정', 9: '초기조정', 10: '오류수정', 11: '기타조정'};
+                            typeName = typeMap[content.type+''];
+
+                            [formatDateTime(content.date), content.number, content.name, typeName,
+                             formatComma(content.changedCount),
+                             (content.presentCount<0)?'-'+formatComma(content.presentCount):formatComma(content.presentCount),
+                             formatComma(content.cost), content.notes].forEach(text => {
+                                const newTd = document.createElement('td');
+                                newTd.textContent = text;
+                                newTr.appendChild(newTd);
+                            });
+
+                            defaultInsertPoint.appendChild(newTr);
+                        });
+                        updateButtonColors();
+                    },
+                    error: function(xhr) { console.log('error'); }
+                });
+                page++;
+            }
+            function formatDateTime(tempDate) {
+                const pad = n => n.toString().padStart(2, '0');
+
+                const date = new Date(tempDate);
+                const yyyy = date.getFullYear();
+                const MM = pad(date.getMonth() + 1);
+                const dd = pad(date.getDate());
+                const HH = pad(date.getHours());
+                const mm = pad(date.getMinutes());
+                const ss = pad(date.getSeconds());
+                return `${yyyy}-${MM}-${dd} ${HH}:${mm}:${ss}`;
+            }
+            function search(){
+                defaultInsertPoint.innerHTML = '';
+                page=1;
+                finPage=false;
+                getPage();
+            }
+
+            function clickRow(){
+                scrollArea.addEventListener("click", (event) => {
+                    const rows = scrollArea.querySelectorAll('table.history tbody tr');
+                    const row = event.target.closest('tbody tr');
+                    if(row!==null) {
+                        const color = row.style.backgroundColor;
+                        if(color==='') {
+                            rows.forEach(temp => temp.style.backgroundColor = '');
+                            row.style.backgroundColor = '#81ACEC';
+                        }else row.style.backgroundColor = '';
+                    }
+                });
+            }
+        </script>
+    </span>
+
+</th:block>
+</html>
